@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/user_service
+    username: user_service
+    password: user_service
+  rabbitmq:
+    addresses: amqp://localhost:5673

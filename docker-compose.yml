@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: user_service
+      POSTGRES_PASSWORD: user_service
+      POSGRES_DB: user_service
+    volumes:
+      - "./.volumes/postgres:/var/lib/postgresql/data"
+    networks:
+      - production-network
+  rabbit:
+    container_name: rabbit
+    image: rabbitmq:3-management
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    networks:
+      - production-network
+
+networks:
+  production-network:
+    driver: bridge

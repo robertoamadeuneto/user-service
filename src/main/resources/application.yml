@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: user-service
+  datasource:
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database-plataform: org.hibernate.dialect.PostgreSQL95Dialect
+    properties:
+      hibernate.jdbc.lob.non_contextual_creation: true
+  cloud:
+    stream:
+      bindings:
+        user-service-output:
+          contentType: application/json
+          destination: user-service.output
+      rabbit:
+        bindings:
+          user-service-output:
+            producer:
+              exchange-type: topic
+              transacted: true
+              routing-key-expression: payload.eventType
