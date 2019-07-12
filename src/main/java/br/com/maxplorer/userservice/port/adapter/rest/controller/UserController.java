@@ -1,7 +1,7 @@
-package br.com.constock.userservice.port.adapter.rest;
+package br.com.maxplorer.userservice.port.adapter.rest;
 
-import br.com.constock.userservice.application.user.UserApplicationService;
-import br.com.constock.userservice.application.user.command.NewUserCommand;
+import br.com.maxplorer.userservice.application.user.UserApplicationService;
+import br.com.maxplorer.userservice.application.user.command.NewUserCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,6 +1,7 @@
 package br.com.constock.userservice.port.adapter.rest;
 
 import br.com.constock.userservice.application.user.UserApplicationService;
+import br.com.constock.userservice.domain.exception.UserEmailAlreadyExistsException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,5 +42,16 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(UserControllerTestFixture.newUserCommand())))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void shouldReturnHttpStatus400WhenUserEmailAlreadyExists() throws Exception {
+
+        when(userApplicationService.registerNewUser(any())).thenThrow(UserEmailAlreadyExistsException.class);
+
+        mockMvc.perform(post(UserController.class.getAnnotation(RequestMapping.class).value()[0])
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(UserControllerTestFixture.newUserCommand())))
+                .andExpect(status().isBadRequest());
     }
 }
