@@ -1,7 +1,7 @@
-package br.com.constock.userservice.port.adapter.messaging;
+package br.com.maxplorer.userservice.port.adapter.messaging;
 
-import br.com.constock.userservice.domain.event.EventPublisher;
-import br.com.constock.userservice.domain.user.UserCreatedEvent;
+import br.com.maxplorer.userservice.domain.event.EventPublisher;
+import br.com.maxplorer.userservice.domain.user.UserCreatedEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;

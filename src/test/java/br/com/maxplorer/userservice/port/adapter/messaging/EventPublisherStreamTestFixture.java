@@ -1,6 +1,8 @@
-package br.com.constock.userservice.port.adapter.messaging;
+package br.com.maxplorer.userservice.port.adapter.messaging;
 
-import br.com.constock.userservice.domain.user.UserCreatedEvent;
+import br.com.maxplorer.userservice.domain.user.UserCreatedEvent;
+
+import java.util.UUID;
 
 class EventPublisherStreamTestFixture {
 
@@ -8,6 +10,6 @@ class EventPublisherStreamTestFixture {
     }
 
     static UserCreatedEvent userCreatedEvent() {
-        return new UserCreatedEvent("James Gosling", "james.gosling@email.com");
+        return new UserCreatedEvent(UUID.randomUUID(), "James Gosling", "james.gosling@email.com");
     }
 }

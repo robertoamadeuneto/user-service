@@ -1,7 +1,7 @@
-package br.com.constock.userservice.port.adapter.jpa;
+package br.com.maxplorer.userservice.port.adapter.jpa;
 
-import br.com.constock.userservice.domain.user.User;
-import br.com.constock.userservice.domain.user.UserRepository;
+import br.com.maxplorer.userservice.domain.user.User;
+import br.com.maxplorer.userservice.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

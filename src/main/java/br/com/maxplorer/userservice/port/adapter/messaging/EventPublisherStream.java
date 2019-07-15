@@ -1,7 +1,7 @@
-package br.com.constock.userservice.port.adapter.messaging;
+package br.com.maxplorer.userservice.port.adapter.messaging;
 
-import br.com.constock.userservice.domain.event.Event;
-import br.com.constock.userservice.domain.event.EventPublisher;
+import br.com.maxplorer.userservice.domain.event.Event;
+import br.com.maxplorer.userservice.domain.event.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;

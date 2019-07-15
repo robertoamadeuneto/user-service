@@ -1,4 +1,4 @@
-package br.com.maxplorer.userservice.port.adapter.rest;
+package br.com.maxplorer.userservice.port.adapter.rest.controller;
 
 import br.com.maxplorer.userservice.application.user.UserApplicationService;
 import br.com.maxplorer.userservice.application.user.command.NewUserCommand;

@@ -1,4 +1,4 @@
-package br.com.constock.userservice.domain.user;
+package br.com.maxplorer.userservice.domain.user;
 
 import java.util.Optional;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package br.com.constock.userservice.domain.event;
+package br.com.maxplorer.userservice.domain.event;
 
 public interface EventPublisher {
 

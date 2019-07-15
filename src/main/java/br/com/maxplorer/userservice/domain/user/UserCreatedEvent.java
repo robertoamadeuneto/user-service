@@ -1,23 +1,25 @@
-package br.com.constock.userservice.domain.user;
+package br.com.maxplorer.userservice.domain.user;
 
-import br.com.constock.userservice.domain.event.Event;
+import br.com.maxplorer.userservice.domain.event.Event;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Data
 public class UserCreatedEvent implements Event {
 
+    private UUID id;
     private String fullName;
     private String email;
-    private final String eventType = "user.created";
 
     @Override
     public String aggregateId() {
-        return "";
+        return id.toString();
     }
 
     @Override
@@ -27,6 +29,6 @@ public class UserCreatedEvent implements Event {
 
     @Override
     public String eventType() {
-        return eventType;
+        return "user.created";
     }
 }

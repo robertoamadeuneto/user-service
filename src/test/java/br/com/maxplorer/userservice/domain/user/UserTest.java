@@ -1,7 +1,7 @@
-package br.com.constock.userservice.domain.user;
+package br.com.maxplorer.userservice.domain.user;
 
-import br.com.constock.userservice.domain.event.EventPublisher;
-import br.com.constock.userservice.domain.event.EventRegistry;
+import br.com.maxplorer.userservice.domain.event.EventPublisher;
+import br.com.maxplorer.userservice.domain.event.EventRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,9 @@
-package br.com.constock.userservice.port.adapter.rest;
+package br.com.maxplorer.userservice.port.adapter.rest;
 
-import br.com.constock.userservice.application.user.UserApplicationService;
-import br.com.constock.userservice.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.application.user.UserApplicationService;
+import br.com.maxplorer.userservice.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.domain.exception.constraint.UserEmailAlreadyExistsConstraint;
+import br.com.maxplorer.userservice.port.adapter.rest.controller.UserController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,11 +49,12 @@ public class UserControllerTest {
     @Test
     public void shouldReturnHttpStatus400WhenUserEmailAlreadyExists() throws Exception {
 
-        when(userApplicationService.registerNewUser(any())).thenThrow(UserEmailAlreadyExistsException.class);
+        when(userApplicationService.registerNewUser(any()))
+                .thenThrow(new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", UserControllerTestFixture.email())));
 
         mockMvc.perform(post(UserController.class.getAnnotation(RequestMapping.class).value()[0])
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(UserControllerTestFixture.newUserCommand())))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isConflict());
     }
 }

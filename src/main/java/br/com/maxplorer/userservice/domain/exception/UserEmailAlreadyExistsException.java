@@ -1,8 +1,11 @@
-package br.com.constock.userservice.domain.exception;
+package br.com.maxplorer.userservice.domain.exception;
 
-public class UserEmailAlreadyExistsException extends RuntimeException {
+import br.com.maxplorer.userservice.domain.exception.constraint.Constraint;
+import br.com.maxplorer.userservice.domain.exception.constraint.ConstraintViolationException;
 
-    public UserEmailAlreadyExistsException(String message) {
-        super(message);
+public class UserEmailAlreadyExistsException extends ConstraintViolationException {
+
+    public UserEmailAlreadyExistsException(Constraint constraint) {
+        super(constraint);
     }
 }

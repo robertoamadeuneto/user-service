@@ -1,4 +1,4 @@
-package br.com.constock.userservice.application.user.command;
+package br.com.maxplorer.userservice.application.user.command;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
@@ -33,7 +33,7 @@ public class NewUserCommand {
     private String lastName;
 
     @JsonProperty("dateOfBirth")
-    @NotNull
+    //@NotNull
     private LocalDate dateOfBirth;
 
     @JsonProperty("genre")

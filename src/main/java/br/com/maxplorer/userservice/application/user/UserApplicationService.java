@@ -1,10 +1,11 @@
-package br.com.constock.userservice.application.user;
+package br.com.maxplorer.userservice.application.user;
 
-import br.com.constock.userservice.application.user.command.NewUserCommand;
-import br.com.constock.userservice.domain.exception.UserEmailAlreadyExistsException;
-import br.com.constock.userservice.domain.user.Genre;
-import br.com.constock.userservice.domain.user.User;
-import br.com.constock.userservice.domain.user.UserRepository;
+import br.com.maxplorer.userservice.application.user.command.NewUserCommand;
+import br.com.maxplorer.userservice.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.domain.exception.constraint.UserEmailAlreadyExistsConstraint;
+import br.com.maxplorer.userservice.domain.user.Genre;
+import br.com.maxplorer.userservice.domain.user.User;
+import br.com.maxplorer.userservice.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class UserApplicationService {
     public UUID registerNewUser(NewUserCommand command) {
 
         if (userRepository.findByEmail(command.email()).isPresent()) {
-            throw new UserEmailAlreadyExistsException("There is a user using this e-mail already");
+            throw new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", command.email()));
         }
 
         final User user = User.newUser(userRepository.newId(),

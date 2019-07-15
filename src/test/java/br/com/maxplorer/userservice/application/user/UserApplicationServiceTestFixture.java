@@ -1,7 +1,7 @@
-package br.com.constock.userservice.application.user;
+package br.com.maxplorer.userservice.application.user;
 
-import br.com.constock.userservice.application.user.command.GenreCommand;
-import br.com.constock.userservice.application.user.command.NewUserCommand;
+import br.com.maxplorer.userservice.application.user.command.GenreCommand;
+import br.com.maxplorer.userservice.application.user.command.NewUserCommand;
 
 import java.time.LocalDate;
 

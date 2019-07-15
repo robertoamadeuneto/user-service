@@ -1,4 +1,4 @@
-package br.com.constock.userservice.port.adapter.messaging;
+package br.com.maxplorer.userservice.port.adapter.messaging;
 
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;

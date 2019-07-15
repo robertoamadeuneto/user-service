@@ -1,4 +1,4 @@
-package br.com.constock.userservice.domain.event;
+package br.com.maxplorer.userservice.domain.event;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -29,7 +29,7 @@ public class EventRegistry implements ApplicationContextAware {
         EventRegistry.applicationContext = applicationContext;
         defineEventPublisher(applicationContext()
                 .map(a -> a.getBean(EventPublisher.class))
-                .orElseThrow(() -> new RuntimeException("Application Context não foi definido para o Registro de Evento")));
+                .orElseThrow(() -> new RuntimeException("Application Context wast not defined for the Event Registry")));
     }
 
     private static Optional<ApplicationContext> applicationContext() {
