@@ -5,16 +5,22 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -32,9 +38,6 @@ public class User implements Serializable {
     @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "middle_name")
-    private String middleName;
-
     @Column(name = "last_name")
     private String lastName;
 
@@ -48,12 +51,12 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
-    private String password;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Password> passwords;
 
     public static User newUser(UUID id,
                                String firstName,
-                               String middleName,
                                String lastName,
                                LocalDate dateOfBirth,
                                Genre genre,
@@ -62,12 +65,11 @@ public class User implements Serializable {
 
         final User newUser = new User(id,
                 firstName,
-                middleName,
                 lastName,
                 dateOfBirth,
                 genre,
                 email,
-                password);
+                new HashSet<>(Collections.singletonList(new Password(password))));
 
         newUser.newUserEvent();
 
@@ -79,6 +81,6 @@ public class User implements Serializable {
     }
 
     private String fullName() {
-        return String.format("%s %s %s", firstName, middleName, lastName).trim();
+        return String.format("%s %s", firstName, lastName).trim();
     }
 }

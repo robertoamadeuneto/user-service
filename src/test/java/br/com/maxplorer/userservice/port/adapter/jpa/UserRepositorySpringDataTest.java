@@ -42,6 +42,7 @@ public class UserRepositorySpringDataTest {
 
     @After
     public void tearDown() {
+        JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "password", "cast(user_id as uuid)=?", UserRepositorySpringDataTestFixture.user().id());
         JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "\"user\"", "email=?", UserRepositorySpringDataTestFixture.email());
     }
 

@@ -29,7 +29,6 @@ public class UserTest {
 
         final User newUser = User.newUser(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
                 "James",
-                null,
                 "Gosling",
                 LocalDate.of(1955, 5, 19),
                 Genre.MALE,

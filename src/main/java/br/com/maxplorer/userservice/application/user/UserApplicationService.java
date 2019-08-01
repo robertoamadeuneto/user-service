@@ -30,7 +30,6 @@ public class UserApplicationService {
         final User user = User.newUser(userRepository.newId(),
                 command.firstName(),
                 command.middleName(),
-                command.lastName(),
                 command.dateOfBirth(),
                 Genre.valueOf(command.genre().name()),
                 command.email(),

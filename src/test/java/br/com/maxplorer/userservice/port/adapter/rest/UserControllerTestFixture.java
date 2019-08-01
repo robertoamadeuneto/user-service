@@ -16,7 +16,6 @@ class UserControllerTestFixture {
 
     static NewUserCommand newUserCommand() {
         return new NewUserCommand("James",
-                null,
                 "Gosling",
                 LocalDate.of(1955, 5, 19),
                 GenreCommand.MALE,

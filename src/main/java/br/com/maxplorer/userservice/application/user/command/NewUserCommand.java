@@ -21,9 +21,6 @@ public class NewUserCommand {
     @JsonProperty("middleName")
     private String middleName;
 
-    @JsonProperty("lastName")
-    private String lastName;
-
     @JsonProperty("dateOfBirth")
     private LocalDate dateOfBirth;
 

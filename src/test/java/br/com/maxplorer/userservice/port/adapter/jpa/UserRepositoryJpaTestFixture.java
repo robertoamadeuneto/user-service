@@ -1,9 +1,12 @@
 package br.com.maxplorer.userservice.port.adapter.jpa;
 
 import br.com.maxplorer.userservice.domain.user.Genre;
+import br.com.maxplorer.userservice.domain.user.Password;
 import br.com.maxplorer.userservice.domain.user.User;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.UUID;
 
 class UserRepositoryJpaTestFixture {
@@ -15,10 +18,9 @@ class UserRepositoryJpaTestFixture {
         return new User(UUID.fromString("d403f15c-516d-4b21-b6dd-1cc59c673c6c"),
                 "James",
                 "Gosling",
-                null,
                 LocalDate.of(1955, 5, 19),
                 Genre.MALE,
                 "james.gosling@email.com",
-                "mnb856vcx");
+                new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
     }
 }

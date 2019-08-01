@@ -24,6 +24,11 @@ public class UserRepositoryJpa implements UserRepository {
 
     @Override
     public void save(User user) {
+        synchronizeBidirectionalMapping(user);
         userRepositorySpringData.save(user);
+    }
+
+    private void synchronizeBidirectionalMapping(User user) {
+        user.passwords().forEach(p -> p.user(user));
     }
 }
