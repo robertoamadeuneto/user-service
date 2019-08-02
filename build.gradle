@@ -6,6 +6,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
 
 group = 'br.com.constock'
 version = '0.0.1-SNAPSHOT'
@@ -63,4 +64,11 @@ dockerCompose {
 
 testlogger {
     setTheme("mocha")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
 }
