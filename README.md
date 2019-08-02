@@ -1,1 +1,2 @@
 [![Build Status](https://travis-ci.org/robertoamadeuneto/user-service.svg?branch=master)](https://travis-ci.org/robertoamadeuneto/user-service)
+[![codecov](https://codecov.io/gh/robertoamadeuneto/user-service/branch/master/graph/badge.svg)](https://codecov.io/gh/robertoamadeuneto/user-service)
