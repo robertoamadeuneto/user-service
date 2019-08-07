@@ -23,16 +23,16 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 public class UserTest {
 
     @Mock
-    private EventPublisher eventPublisher;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Mock
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private EventPublisher eventPublisher;
 
     @Before
     public void setUp() throws Exception {
-        EventRegistry.defineEventPublisher(eventPublisher);
         whenNew(BCryptPasswordEncoder.class).withAnyArguments().thenReturn(bCryptPasswordEncoder);
         when(bCryptPasswordEncoder.encode(any())).thenReturn("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G");
+        EventRegistry.defineEventPublisher(eventPublisher);
     }
 
     @Test

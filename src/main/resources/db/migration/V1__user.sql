@@ -9,7 +9,7 @@ create table "user" (
 
 create table password (
   user_id  uuid not null references "user"(id),
-  password varchar(50) not null,
+  password varchar(60) not null,
   active   boolean not null,
 
   primary key (user_id, password)
