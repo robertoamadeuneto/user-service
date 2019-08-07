@@ -13,13 +13,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -40,7 +42,7 @@ public class UserControllerTest {
 
         when(userApplicationService.registerNewUser(any())).thenReturn(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"));
 
-        mockMvc.perform(post(UserController.class.getAnnotation(RequestMapping.class).value()[0])
+        mockMvc.perform(post("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(UserControllerTestFixture.newUserCommand())))
                 .andExpect(status().isCreated());
@@ -52,9 +54,20 @@ public class UserControllerTest {
         when(userApplicationService.registerNewUser(any()))
                 .thenThrow(new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", UserControllerTestFixture.email())));
 
-        mockMvc.perform(post(UserController.class.getAnnotation(RequestMapping.class).value()[0])
+        mockMvc.perform(post("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(UserControllerTestFixture.newUserCommand())))
                 .andExpect(status().isConflict());
+    }
+
+    @Test
+    public void shouldFindUserById() throws Exception {
+
+        when(userApplicationService.findUserById(any())).thenReturn(UserControllerTestFixture.userQuery());
+
+        mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.id())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(UserControllerTestFixture.userQuery())));
     }
 }

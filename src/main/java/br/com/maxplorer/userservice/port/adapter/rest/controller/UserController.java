@@ -2,8 +2,11 @@ package br.com.maxplorer.userservice.port.adapter.rest.controller;
 
 import br.com.maxplorer.userservice.application.user.UserApplicationService;
 import br.com.maxplorer.userservice.application.user.command.NewUserCommand;
+import br.com.maxplorer.userservice.application.user.query.UserQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +23,23 @@ public class UserController {
     private UserApplicationService userApplicationService;
 
     @PostMapping
-    public ResponseEntity<Void> registerNewUser(@RequestBody NewUserCommand newUserCommand) {
+    public ResponseEntity<Void> registerNewUser(@RequestBody NewUserCommand command) {
 
-        final UUID newUserId = userApplicationService.registerNewUser(newUserCommand);
+        final UUID newUserId = userApplicationService.registerNewUser(command);
 
         return ResponseEntity.created(ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{userId}")
+                .path("/{newUserId}")
                 .buildAndExpand(newUserId)
                 .toUri())
                 .build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserQuery> findUserById(@PathVariable UUID id) {
+
+        final UserQuery query = userApplicationService.findUserById(id);
+
+        return ResponseEntity.ok(query);
     }
 }

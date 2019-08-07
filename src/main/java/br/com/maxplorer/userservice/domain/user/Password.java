@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +40,7 @@ public class Password implements Serializable {
     private Boolean active;
 
     public Password(String password) {
-        this.password = password;
+        this.password = new BCryptPasswordEncoder().encode(password);
         this.active = true;
     }
 

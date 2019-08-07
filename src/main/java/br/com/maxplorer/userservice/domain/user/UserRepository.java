@@ -9,6 +9,8 @@ public interface UserRepository {
         return UUID.randomUUID();
     }
 
+    Optional<User> findById(UUID id);
+
     Optional<User> findByEmail(String email);
 
     void save(User user);

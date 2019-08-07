@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class UserRepositoryJpa implements UserRepository {
@@ -15,6 +16,11 @@ public class UserRepositoryJpa implements UserRepository {
     @Autowired
     public UserRepositoryJpa(UserRepositorySpringData userRepositorySpringData) {
         this.userRepositorySpringData = userRepositorySpringData;
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        return userRepositorySpringData.findById(id);
     }
 
     @Override

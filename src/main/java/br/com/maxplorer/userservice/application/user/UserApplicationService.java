@@ -1,8 +1,11 @@
 package br.com.maxplorer.userservice.application.user;
 
 import br.com.maxplorer.userservice.application.user.command.NewUserCommand;
+import br.com.maxplorer.userservice.application.user.query.UserQuery;
 import br.com.maxplorer.userservice.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.domain.exception.UserNotFoundException;
 import br.com.maxplorer.userservice.domain.exception.constraint.UserEmailAlreadyExistsConstraint;
+import br.com.maxplorer.userservice.domain.exception.constraint.UserNotFoundConstraint;
 import br.com.maxplorer.userservice.domain.user.Genre;
 import br.com.maxplorer.userservice.domain.user.User;
 import br.com.maxplorer.userservice.domain.user.UserRepository;
@@ -38,5 +41,13 @@ public class UserApplicationService {
         userRepository.save(user);
 
         return user.id();
+    }
+
+    public UserQuery findUserById(UUID id) {
+
+        final User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(new UserNotFoundConstraint("id", id.toString())));
+
+        return UserQuery.from(user);
     }
 }

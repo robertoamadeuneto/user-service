@@ -6,22 +6,33 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Password.class)
 public class UserTest {
 
     @Mock
     private EventPublisher eventPublisher;
 
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         EventRegistry.defineEventPublisher(eventPublisher);
+        whenNew(BCryptPasswordEncoder.class).withAnyArguments().thenReturn(bCryptPasswordEncoder);
+        when(bCryptPasswordEncoder.encode(any())).thenReturn("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G");
     }
 
     @Test
@@ -36,5 +47,19 @@ public class UserTest {
                 "mnb856vcx");
 
         assertThat(newUser).isEqualToComparingFieldByFieldRecursively(UserTestFixture.newUser());
+    }
+
+    @Test
+    public void shouldReturnFullName() {
+
+        final String fullName = User.newUser(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
+                "James",
+                "Gosling",
+                LocalDate.of(1955, 5, 19),
+                Genre.MALE,
+                "james.gosling@email.com",
+                "mnb856vcx").fullName();
+
+        assertThat(fullName).isEqualTo("James Gosling");
     }
 }

@@ -71,16 +71,16 @@ public class User implements Serializable {
                 email,
                 new HashSet<>(Collections.singletonList(new Password(password))));
 
-        newUser.newUserEvent();
+        newUser.publishUserCreatedEvent();
 
         return newUser;
     }
 
-    private void newUserEvent() {
+    private void publishUserCreatedEvent() {
         EventRegistry.eventPublisher().publish(new UserCreatedEvent(id(), fullName(), email));
     }
 
-    private String fullName() {
+    public String fullName() {
         return String.format("%s %s", firstName, lastName).trim();
     }
 }
