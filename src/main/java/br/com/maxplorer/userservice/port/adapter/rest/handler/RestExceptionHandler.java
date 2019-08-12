@@ -1,6 +1,7 @@
 package br.com.maxplorer.userservice.port.adapter.rest.handler;
 
 import br.com.maxplorer.userservice.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.domain.exception.UserNotFoundException;
 import br.com.maxplorer.userservice.domain.exception.constraint.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -25,6 +26,11 @@ public class RestExceptionHandler {
     @ExceptionHandler(UserEmailAlreadyExistsException.class)
     public ResponseEntity<RestExceptionDetails> handleUserEmailAlreadyExistsException(UserEmailAlreadyExistsException exception) {
         return new ResponseEntity<>(toRestExceptionDetails(exception), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<RestExceptionDetails> handleUserNotFoundException(UserNotFoundException exception) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     private <T extends ConstraintViolationException> RestExceptionDetails toRestExceptionDetails(T exception) {

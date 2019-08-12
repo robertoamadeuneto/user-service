@@ -3,6 +3,7 @@ package br.com.maxplorer.userservice.application.user;
 import br.com.maxplorer.userservice.domain.event.EventPublisher;
 import br.com.maxplorer.userservice.domain.event.EventRegistry;
 import br.com.maxplorer.userservice.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.domain.exception.UserNotFoundException;
 import br.com.maxplorer.userservice.domain.user.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,5 +51,14 @@ public class UserApplicationServiceTest {
 
         assertThatThrownBy(() -> userApplicationService.registerNewUser(UserApplicationServiceTestFixture.newUserCommand()))
                 .isInstanceOf(UserEmailAlreadyExistsException.class);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToFindUserWithNonexistentId() {
+
+        when(userRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userApplicationService.findUserById(UserApplicationServiceTestFixture.id()))
+                .isInstanceOf(UserNotFoundException.class);
     }
 }

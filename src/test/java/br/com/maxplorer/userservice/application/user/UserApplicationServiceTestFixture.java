@@ -16,6 +16,10 @@ class UserApplicationServiceTestFixture {
     private UserApplicationServiceTestFixture() {
     }
 
+    static UUID id() {
+        return UUID.randomUUID();
+    }
+
     static NewUserCommand newUserCommand() {
         return new NewUserCommand("James",
                 "Gosling",
@@ -26,7 +30,7 @@ class UserApplicationServiceTestFixture {
     }
 
     static User user() {
-        return new User(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
+        return new User(id(),
                 "James",
                 "Gosling",
                 LocalDate.of(1955, 5, 19),

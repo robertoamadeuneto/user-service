@@ -2,6 +2,7 @@ package br.com.maxplorer.userservice.port.adapter.rest;
 
 import br.com.maxplorer.userservice.application.user.UserApplicationService;
 import br.com.maxplorer.userservice.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.domain.exception.UserNotFoundException;
 import br.com.maxplorer.userservice.domain.exception.constraint.UserEmailAlreadyExistsConstraint;
 import br.com.maxplorer.userservice.port.adapter.rest.controller.UserController;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.UUID;
 
@@ -69,5 +69,15 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(UserControllerTestFixture.userQuery())));
+    }
+
+    @Test
+    public void shouldReturnHttpStatus404WhenUserNotFound() throws Exception {
+
+        when(userApplicationService.findUserById(any())).thenThrow(UserNotFoundException.class);
+
+        mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.id())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
