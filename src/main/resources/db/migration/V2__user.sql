@@ -13,4 +13,7 @@ create table password (
   active   boolean not null,
 
   primary key (user_id, password)
-)
+);
+
+insert into event_type (event_type_id) values
+('user.created');

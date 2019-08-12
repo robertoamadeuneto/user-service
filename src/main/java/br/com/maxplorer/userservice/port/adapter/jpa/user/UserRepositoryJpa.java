@@ -1,4 +1,4 @@
-package br.com.maxplorer.userservice.port.adapter.jpa;
+package br.com.maxplorer.userservice.port.adapter.jpa.user;
 
 import br.com.maxplorer.userservice.domain.user.User;
 import br.com.maxplorer.userservice.domain.user.UserRepository;
@@ -11,27 +11,27 @@ import java.util.UUID;
 @Repository
 public class UserRepositoryJpa implements UserRepository {
 
-    private UserRepositorySpringData userRepositorySpringData;
+    private UserRepositoryJpaSpringData userRepositoryJpaSpringData;
 
     @Autowired
-    public UserRepositoryJpa(UserRepositorySpringData userRepositorySpringData) {
-        this.userRepositorySpringData = userRepositorySpringData;
+    public UserRepositoryJpa(UserRepositoryJpaSpringData userRepositoryJpaSpringData) {
+        this.userRepositoryJpaSpringData = userRepositoryJpaSpringData;
     }
 
     @Override
     public Optional<User> findById(UUID id) {
-        return userRepositorySpringData.findById(id);
+        return userRepositoryJpaSpringData.findById(id);
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return userRepositorySpringData.findByEmail(email);
+        return userRepositoryJpaSpringData.findByEmail(email);
     }
 
     @Override
     public void save(User user) {
         synchronizeBidirectionalMapping(user);
-        userRepositorySpringData.save(user);
+        userRepositoryJpaSpringData.save(user);
     }
 
     private void synchronizeBidirectionalMapping(User user) {

@@ -4,9 +4,9 @@ import br.com.maxplorer.userservice.domain.user.UserCreatedEvent;
 
 import java.util.UUID;
 
-class EventPublisherStreamTestFixture {
+class MessagingStreamTestFixture {
 
-    private EventPublisherStreamTestFixture() {
+    private MessagingStreamTestFixture() {
     }
 
     static UserCreatedEvent userCreatedEvent() {

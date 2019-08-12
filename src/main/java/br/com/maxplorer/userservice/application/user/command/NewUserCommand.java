@@ -18,8 +18,8 @@ public class NewUserCommand {
     @JsonProperty("firstName")
     private String firstName;
 
-    @JsonProperty("middleName")
-    private String middleName;
+    @JsonProperty("lastName")
+    private String lastName;
 
     @JsonProperty("dateOfBirth")
     private LocalDate dateOfBirth;

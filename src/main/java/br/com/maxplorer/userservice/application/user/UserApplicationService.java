@@ -26,13 +26,13 @@ public class UserApplicationService {
 
     public UUID registerNewUser(NewUserCommand command) {
 
-        if (userRepository.findByEmail(command.email()).isPresent()) {
-            throw new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", command.email()));
-        }
+        userRepository.findByEmail(command.email()).ifPresent(u -> {
+            throw new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", u.email()));
+        });
 
         final User user = User.newUser(userRepository.newId(),
                 command.firstName(),
-                command.middleName(),
+                command.lastName(),
                 command.dateOfBirth(),
                 Genre.valueOf(command.genre().name()),
                 command.email(),

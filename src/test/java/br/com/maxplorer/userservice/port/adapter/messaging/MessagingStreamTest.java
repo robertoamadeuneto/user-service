@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class EventPublisherStreamTest {
+public class MessagingStreamTest {
 
     @Autowired
     private EventPublisher publisher;
@@ -36,7 +36,7 @@ public class EventPublisherStreamTest {
     @Test
     public void shouldPublishUserCreatedEvent() throws InterruptedException, IOException {
 
-        final UserCreatedEvent event = EventPublisherStreamTestFixture.userCreatedEvent();
+        final UserCreatedEvent event = MessagingStreamTestFixture.userCreatedEvent();
 
         publisher.publish(event);
 

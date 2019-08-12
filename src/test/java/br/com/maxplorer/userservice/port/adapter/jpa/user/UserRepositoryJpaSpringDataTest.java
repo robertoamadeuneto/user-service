@@ -1,4 +1,4 @@
-package br.com.maxplorer.userservice.port.adapter.jpa;
+package br.com.maxplorer.userservice.port.adapter.jpa.user;
 
 import br.com.maxplorer.userservice.domain.user.Password;
 import br.com.maxplorer.userservice.domain.user.User;
@@ -32,7 +32,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @PrepareForTest(Password.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class UserRepositorySpringDataTest {
+public class UserRepositoryJpaSpringDataTest {
 
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -44,30 +44,30 @@ public class UserRepositorySpringDataTest {
     private TransactionTemplate transactionTemplate;
 
     @Autowired
-    private UserRepositorySpringData userRepositorySpringData;
+    private UserRepositoryJpaSpringData userRepositoryJpaSpringData;
 
     @Before
     public void setUp() throws Exception {
         whenNew(BCryptPasswordEncoder.class).withAnyArguments().thenReturn(bCryptPasswordEncoder);
         when(bCryptPasswordEncoder.encode(any())).thenReturn("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G");
         transactionTemplate.execute((TransactionCallback<User>) status -> {
-            userRepositorySpringData.save(UserRepositorySpringDataTestFixture.user());
+            userRepositoryJpaSpringData.save(UserRepositoryJpaSpringDataTestFixture.user());
             return null;
         });
     }
 
     @After
     public void tearDown() {
-        JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "password", "cast(user_id as uuid)=?", UserRepositorySpringDataTestFixture.user().id());
-        JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "\"user\"", "email=?", UserRepositorySpringDataTestFixture.email());
+        JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "password", "cast(user_id as uuid)=?", UserRepositoryJpaSpringDataTestFixture.user().id());
+        JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "\"user\"", "email=?", UserRepositoryJpaSpringDataTestFixture.email());
     }
 
     @Test
     public void shouldFindByEmail() {
 
-        final Optional<User> user = userRepositorySpringData.findByEmail(UserRepositorySpringDataTestFixture.email());
+        final Optional<User> user = userRepositoryJpaSpringData.findByEmail(UserRepositoryJpaSpringDataTestFixture.email());
 
         assertThat(user).isPresent();
-        assertThat(user.get()).isEqualToComparingFieldByFieldRecursively(UserRepositorySpringDataTestFixture.user());
+        assertThat(user.get()).isEqualToComparingFieldByFieldRecursively(UserRepositoryJpaSpringDataTestFixture.user());
     }
 }

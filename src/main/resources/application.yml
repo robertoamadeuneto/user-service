@@ -12,7 +12,7 @@ spring:
       bindings:
         user-service-output:
           contentType: application/json
-          destination: user-service.output
+          destination: user-service-output
       rabbit:
         bindings:
           user-service-output:

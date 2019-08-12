@@ -8,15 +8,15 @@ import java.util.UUID;
 @JsonIgnoreProperties({"eventId", "aggregateId", "eventType", "eventVersion", "occurredOn"})
 public interface Event {
 
-    default EventId eventId() {
-        return new EventId(UUID.randomUUID().toString().toUpperCase());
+    default UUID eventId() {
+        return UUID.randomUUID();
     }
 
-    String aggregateId();
-
-    int eventVersion();
+    UUID aggregateId();
 
     String eventType();
+
+    int eventVersion();
 
     default OffsetDateTime occurredOn() {
         return OffsetDateTime.now();

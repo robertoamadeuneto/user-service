@@ -1,4 +1,4 @@
-package br.com.maxplorer.userservice.port.adapter.jpa;
+package br.com.maxplorer.userservice.port.adapter.jpa.user;
 
 import br.com.maxplorer.userservice.domain.user.Password;
 import br.com.maxplorer.userservice.domain.user.User;
@@ -27,7 +27,7 @@ public class UserRepositoryJpaTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Mock
-    private UserRepositorySpringData userRepositorySpringData;
+    private UserRepositoryJpaSpringData userRepositoryJpaSpringData;
 
     private UserRepositoryJpa userRepositoryJpa;
 
@@ -35,14 +35,14 @@ public class UserRepositoryJpaTest {
     public void setUp() throws Exception {
         whenNew(BCryptPasswordEncoder.class).withAnyArguments().thenReturn(bCryptPasswordEncoder);
         when(bCryptPasswordEncoder.encode(any())).thenReturn("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G");
-        userRepositoryJpa = new UserRepositoryJpa(userRepositorySpringData);
+        userRepositoryJpa = new UserRepositoryJpa(userRepositoryJpaSpringData);
     }
 
     @Test
     public void shouldFindByEmail() {
 
         final User user = UserRepositoryJpaTestFixture.user();
-        when(userRepositorySpringData.findByEmail(any())).thenReturn(Optional.of(user));
+        when(userRepositoryJpaSpringData.findByEmail(any())).thenReturn(Optional.of(user));
 
         final Optional<User> foundUser = userRepositoryJpa.findByEmail("james.gosling@email.com");
 
@@ -57,6 +57,6 @@ public class UserRepositoryJpaTest {
 
         userRepositoryJpa.save(user);
 
-        verify(userRepositorySpringData).save(same(user));
+        verify(userRepositoryJpaSpringData).save(same(user));
     }
 }

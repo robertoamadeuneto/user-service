@@ -1,4 +1,4 @@
-package br.com.maxplorer.userservice.port.adapter.jpa;
+package br.com.maxplorer.userservice.port.adapter.jpa.user;
 
 import br.com.maxplorer.userservice.domain.user.Genre;
 import br.com.maxplorer.userservice.domain.user.Password;
@@ -9,18 +9,26 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.UUID;
 
-class UserRepositoryJpaTestFixture {
+class UserRepositoryJpaSpringDataTestFixture {
 
-    private UserRepositoryJpaTestFixture() {
+    private UserRepositoryJpaSpringDataTestFixture() {
+    }
+
+    static String email() {
+        return "james.gosling@email.com";
     }
 
     static User user() {
-        return new User(UUID.fromString("d403f15c-516d-4b21-b6dd-1cc59c673c6c"),
+        User user = new User(UUID.fromString("4d5a7d69-0567-44eb-981e-49626fb5f434"),
                 "James",
                 "Gosling",
                 LocalDate.of(1955, 5, 19),
                 Genre.MALE,
-                "james.gosling@email.com",
+                email(),
                 new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
+
+        user.passwords().forEach(p -> p.user(user));
+
+        return user;
     }
 }
