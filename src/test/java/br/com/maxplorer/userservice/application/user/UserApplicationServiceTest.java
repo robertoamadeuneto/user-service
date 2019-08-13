@@ -1,5 +1,6 @@
 package br.com.maxplorer.userservice.application.user;
 
+import br.com.maxplorer.userservice.application.user.query.UserQuery;
 import br.com.maxplorer.userservice.domain.event.EventPublisher;
 import br.com.maxplorer.userservice.domain.event.EventRegistry;
 import br.com.maxplorer.userservice.domain.exception.UserEmailAlreadyExistsException;
@@ -12,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
-import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -51,6 +52,16 @@ public class UserApplicationServiceTest {
 
         assertThatThrownBy(() -> userApplicationService.registerNewUser(UserApplicationServiceTestFixture.newUserCommand()))
                 .isInstanceOf(UserEmailAlreadyExistsException.class);
+    }
+
+    @Test
+    public void shouldFindUserById() {
+
+        when(userRepository.findById(any())).thenReturn(Optional.of(UserApplicationServiceTestFixture.user()));
+
+        final UserQuery userQuery = userApplicationService.findUserById(UserApplicationServiceTestFixture.id());
+
+        assertThat(userQuery).isEqualToComparingFieldByFieldRecursively(UserApplicationServiceTestFixture.userQuery());
     }
 
     @Test

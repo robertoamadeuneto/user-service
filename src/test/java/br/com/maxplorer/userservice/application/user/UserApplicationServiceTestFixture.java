@@ -2,6 +2,8 @@ package br.com.maxplorer.userservice.application.user;
 
 import br.com.maxplorer.userservice.application.user.command.GenreCommand;
 import br.com.maxplorer.userservice.application.user.command.NewUserCommand;
+import br.com.maxplorer.userservice.application.user.query.GenreQuery;
+import br.com.maxplorer.userservice.application.user.query.UserQuery;
 import br.com.maxplorer.userservice.domain.user.Genre;
 import br.com.maxplorer.userservice.domain.user.Password;
 import br.com.maxplorer.userservice.domain.user.User;
@@ -37,5 +39,12 @@ class UserApplicationServiceTestFixture {
                 Genre.MALE,
                 "james.gosling@email.com",
                 new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
+    }
+
+    static UserQuery userQuery() {
+        return new UserQuery("James Gosling",
+                LocalDate.of(1955, 5, 19),
+                GenreQuery.MALE,
+                "james.gosling@email.com");
     }
 }
