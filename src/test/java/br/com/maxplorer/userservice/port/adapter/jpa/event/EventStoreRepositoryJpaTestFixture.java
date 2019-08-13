@@ -16,6 +16,8 @@ class EventStoreRepositoryJpaTestFixture {
                 "user.created",
                 1,
                 OffsetDateTime.now(),
-                "{\\\"firstName\\\": \\\"James\\\"}");
+                "{\\\"id\\\": \\\"d403f15c-516d-4b21-b6dd-1cc59c673c6c\\\", "
+                        + "\\\"email\\\": \\\"james.gosling@email.com\\\", "
+                        + "\\\"fullName\\\": \\\"James Gosling\\\"}");
     }
 }

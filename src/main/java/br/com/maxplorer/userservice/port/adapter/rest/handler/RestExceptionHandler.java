@@ -29,7 +29,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<RestExceptionDetails> handleUserNotFoundException(UserNotFoundException exception) {
+    public ResponseEntity<RestExceptionDetails> handleUserNotFoundException() {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
