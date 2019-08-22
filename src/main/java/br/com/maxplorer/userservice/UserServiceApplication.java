@@ -1,6 +1,6 @@
 package br.com.maxplorer.userservice;
 
-import br.com.maxplorer.userservice.port.adapter.messaging.MessagingChannels;
+import br.com.maxplorer.userservice.adapter.messaging.MessagingChannels;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
