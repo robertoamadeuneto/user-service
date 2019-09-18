@@ -23,6 +23,8 @@ ext {
     set("assertjVersion", "3.11.1")
     set("powerMockVersion", "2.0.2")
     set("hibernateTypesVersion", "2.4.1")
+    set("swaggerUiVersion", '2.9.2')
+    set("swagger2Version", '2.9.2')
 }
 
 dependencies {
@@ -36,6 +38,8 @@ dependencies {
     implementation "org.springframework.cloud:spring-cloud-stream"
     implementation "org.springframework.security:spring-security-crypto:${springSecurityVersion}"
     implementation "com.vladmihalcea:hibernate-types-52:${hibernateTypesVersion}"
+    implementation "io.springfox:springfox-swagger-ui:${swaggerUiVersion}"
+    implementation "io.springfox:springfox-swagger2:${swagger2Version}"
 
     runtimeOnly "org.springframework.cloud:spring-cloud-stream-binder-rabbit"
     runtimeOnly "org.springframework.boot:spring-boot-devtools"
