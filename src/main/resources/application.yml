@@ -9,6 +9,7 @@ spring:
       hibernate.jdbc.lob.non_contextual_creation: true
   cloud:
     stream:
+      default-binder: rabbit
       bindings:
         user-service-output:
           contentType: application/json

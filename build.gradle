@@ -36,6 +36,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.cloud:spring-cloud-stream"
+    implementation "org.springframework.cloud:spring-cloud-starter-consul-all"
     implementation "org.springframework.security:spring-security-crypto:${springSecurityVersion}"
     implementation "com.vladmihalcea:hibernate-types-52:${hibernateTypesVersion}"
     implementation "io.springfox:springfox-swagger-ui:${swaggerUiVersion}"
@@ -68,6 +69,17 @@ tasks {
     bootJar {
         archiveFileName.set("app.jar")
     }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+
+    check {
+        dependsOn(jacocoTestReport)
+    }
 }
 
 dockerCompose {
@@ -76,11 +88,4 @@ dockerCompose {
 
 testlogger {
     setTheme("mocha")
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled false
-    }
 }
