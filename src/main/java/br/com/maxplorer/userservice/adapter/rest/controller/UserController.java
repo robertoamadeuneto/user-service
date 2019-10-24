@@ -42,4 +42,12 @@ public class UserController {
 
         return ResponseEntity.ok(query);
     }
+
+    @PostMapping("/{id}/activation")
+    public ResponseEntity<Void> activateUser(@PathVariable UUID id) {
+
+        userApplicationService.activateUser(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -62,4 +62,14 @@ public class UserTest {
 
         assertThat(fullName).isEqualTo("James Gosling");
     }
+
+    @Test
+    public void shouldActivate() {
+
+        final User user = UserTestFixture.newUser();
+
+        user.activate();
+
+        assertThat(user).isEqualToComparingFieldByFieldRecursively(UserTestFixture.activatedUser());
+    }
 }

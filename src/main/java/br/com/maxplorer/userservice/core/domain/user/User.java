@@ -45,11 +45,15 @@ public class User implements Serializable {
     private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "genre")
+    @Column(name = "genre_id")
     private Genre genre;
 
     @Column(name = "email")
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_id")
+    private Status status;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -69,6 +73,7 @@ public class User implements Serializable {
                 dateOfBirth,
                 genre,
                 email,
+                Status.PENDING,
                 new HashSet<>(Collections.singletonList(new Password(password))));
 
         newUser.publishUserCreatedEvent();
@@ -82,5 +87,9 @@ public class User implements Serializable {
 
     public String fullName() {
         return String.format("%s %s", firstName, lastName).trim();
+    }
+
+    public void activate() {
+        this.status = Status.ACTIVE;
     }
 }

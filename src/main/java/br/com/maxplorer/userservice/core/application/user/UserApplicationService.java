@@ -49,4 +49,14 @@ public class UserApplicationService {
 
         return UserQuery.from(user);
     }
+
+    public void activateUser(UUID id) {
+
+        final User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
+
+        user.activate();
+
+        userRepository.save(user);
+    }
 }

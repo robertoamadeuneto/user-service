@@ -1,10 +1,10 @@
 package br.com.maxplorer.userservice.adapter.rest;
 
+import br.com.maxplorer.userservice.adapter.rest.controller.UserController;
 import br.com.maxplorer.userservice.core.application.user.UserApplicationService;
 import br.com.maxplorer.userservice.core.domain.exception.UserEmailAlreadyExistsException;
 import br.com.maxplorer.userservice.core.domain.exception.UserNotFoundException;
 import br.com.maxplorer.userservice.core.domain.exception.constraint.UserEmailAlreadyExistsConstraint;
-import br.com.maxplorer.userservice.adapter.rest.controller.UserController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,7 +51,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldReturnHttpStatus400WhenUserEmailAlreadyExists() throws Exception {
+    public void shouldReturnHttpStatus400WhenTryingToRegisterNewUserAndUserEmailAlreadyExists() throws Exception {
 
         when(userApplicationService.registerNewUser(any()))
                 .thenThrow(new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", UserControllerTestFixture.email())));
@@ -72,11 +74,31 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldReturnHttpStatus404WhenUserNotFound() throws Exception {
+    public void shouldReturnHttpStatus404WhenTryingToFindUserByIdAndUserWasNotFound() throws Exception {
 
         when(userApplicationService.findUserById(any())).thenThrow(UserNotFoundException.class);
 
         mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.id())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldActivateUserById() throws Exception {
+
+        doNothing().when(userApplicationService).activateUser(any());
+
+        mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.id() + "/activation")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void shouldReturnHttpStatus404WhenTryingToActivateUserAndUserWasNotFound() throws Exception {
+
+        doThrow(UserNotFoundException.class).when(userApplicationService).activateUser(any());
+
+        mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.id() + "/activation")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }

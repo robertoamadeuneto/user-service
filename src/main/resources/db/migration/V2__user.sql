@@ -1,10 +1,24 @@
+create table genre (genre_id varchar(50) not null primary key);
+
+insert into genre (genre_id) values
+('FEMALE'),
+('MALE');
+
+create table status (status_id varchar(50) not null primary key);
+
+insert into status (status_id) values
+('PENDING'),
+('ACTIVE'),
+('INACTIVE');
+
 create table "user" (
-  id            uuid not null primary key,
-  first_name    varchar(50) not null,
-  last_name     varchar,
-  date_of_birth timestamp,
-  genre         varchar(6) not null,
-  email         varchar(50) not null
+  id             uuid not null primary key,
+  first_name     varchar(50) not null,
+  last_name      varchar not null,
+  date_of_birth  timestamp not null,
+  genre_id       varchar(6) not null references genre(genre_id),
+  email          varchar(50) not null,
+  status_id      varchar(50) not null references status(status_id)
 );
 
 create table password (
