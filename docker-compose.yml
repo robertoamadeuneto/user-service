@@ -9,12 +9,12 @@ services:
     environment:
       POSTGRES_USER: user_service
       POSTGRES_PASSWORD: user_service
-      POSGRES_DB: user_service
+      POSTGRES_DB: user_service
     volumes:
       - "./.volumes/postgres:/var/lib/postgresql/data"
     networks:
       - production-network
-  rabbit:
+  rabbitmq:
     container_name: rabbit
     image: rabbitmq:3-management
     ports:
