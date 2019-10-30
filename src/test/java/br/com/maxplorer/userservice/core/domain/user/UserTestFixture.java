@@ -10,7 +10,7 @@ class UserTestFixture {
     private UserTestFixture() {
     }
 
-    static User newUser() {
+    static User pendingUser() {
         return new User(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
                 "James",
                 "Gosling",
@@ -21,7 +21,7 @@ class UserTestFixture {
                 new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
     }
 
-    static User activatedUser() {
+    static User activeUser() {
         return new User(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
                 "James",
                 "Gosling",

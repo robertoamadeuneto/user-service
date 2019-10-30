@@ -46,7 +46,7 @@ public class UserTest {
                 "james.gosling@email.com",
                 "mnb856vcx");
 
-        assertThat(newUser).isEqualToComparingFieldByFieldRecursively(UserTestFixture.newUser());
+        assertThat(newUser).isEqualToComparingFieldByFieldRecursively(UserTestFixture.pendingUser());
     }
 
     @Test
@@ -66,10 +66,10 @@ public class UserTest {
     @Test
     public void shouldActivate() {
 
-        final User user = UserTestFixture.newUser();
+        final User user = UserTestFixture.pendingUser();
 
         user.activate();
 
-        assertThat(user).isEqualToComparingFieldByFieldRecursively(UserTestFixture.activatedUser());
+        assertThat(user).isEqualToComparingFieldByFieldRecursively(UserTestFixture.activeUser());
     }
 }
