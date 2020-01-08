@@ -48,6 +48,8 @@ public class UserRepositoryJpaTest {
 
         assertThat(foundUser).isPresent();
         assertThat(foundUser.get()).isEqualToComparingFieldByFieldRecursively(UserRepositoryJpaTestFixture.user());
+
+        verify(userRepositoryJpaSpringData).findByEmail(same(user.email()));
     }
 
     @Test

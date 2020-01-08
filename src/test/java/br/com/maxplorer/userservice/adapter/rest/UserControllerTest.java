@@ -18,8 +18,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -48,6 +50,8 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(UserControllerTestFixture.newUserCommand())))
                 .andExpect(status().isCreated());
+
+        verify(userApplicationService).registerNewUser(eq(UserControllerTestFixture.newUserCommand()));
     }
 
     @Test
@@ -60,6 +64,8 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(UserControllerTestFixture.newUserCommand())))
                 .andExpect(status().isConflict());
+
+        verify(userApplicationService).registerNewUser(eq(UserControllerTestFixture.newUserCommand()));
     }
 
     @Test
@@ -71,6 +77,8 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(UserControllerTestFixture.userQuery())));
+
+        verify(userApplicationService).findUserById(eq(UserControllerTestFixture.id()));
     }
 
     @Test
@@ -81,6 +89,8 @@ public class UserControllerTest {
         mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.id())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+
+        verify(userApplicationService).findUserById(eq(UserControllerTestFixture.id()));
     }
 
     @Test
@@ -91,6 +101,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.id() + "/activation")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+
+        verify(userApplicationService).activateUser(eq(UserControllerTestFixture.id()));
     }
 
     @Test
@@ -101,5 +113,7 @@ public class UserControllerTest {
         mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.id() + "/activation")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+
+        verify(userApplicationService).activateUser(eq(UserControllerTestFixture.id()));
     }
 }

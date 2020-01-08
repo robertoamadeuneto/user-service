@@ -31,4 +31,16 @@ class UserTestFixture {
                 Status.ACTIVE,
                 new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
     }
+
+    static UserCreatedEvent userCreatedEvent() {
+        return new UserCreatedEvent(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
+                "James Gosling",
+                "james.gosling@email.com");
+    }
+
+    static UserActivatedEvent userActivatedEvent() {
+        return new UserActivatedEvent(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
+                "James Gosling",
+                "james.gosling@email.com");
+    }
 }

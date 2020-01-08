@@ -16,6 +16,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,13 +54,16 @@ public class UserApplicationServiceTest {
     @Test
     public void shouldRegisterNewUser() {
 
+        when(userRepository.findByEmail(UserApplicationServiceTestFixture.newUserCommand().email())).thenReturn(Optional.empty());
         when(userRepository.newId()).thenReturn(UserApplicationServiceTestFixture.userId());
 
         final UUID newUserId = userApplicationService.registerNewUser(UserApplicationServiceTestFixture.newUserCommand());
 
-        verify(userRepository).save(eq(UserApplicationServiceTestFixture.pendingUser()));
-
         assertThat(newUserId).isEqualTo(UserApplicationServiceTestFixture.userId());
+
+        verify(userRepository).findByEmail(UserApplicationServiceTestFixture.newUserCommand().email());
+        verify(userRepository).newId();
+        verify(userRepository).save(eq(UserApplicationServiceTestFixture.pendingUser()));
     }
 
     @Test
@@ -71,6 +75,8 @@ public class UserApplicationServiceTest {
 
         assertThatThrownBy(() -> userApplicationService.registerNewUser(UserApplicationServiceTestFixture.newUserCommand()))
                 .isInstanceOf(UserEmailAlreadyExistsException.class);
+
+        verify(userRepository).findByEmail(eq(UserApplicationServiceTestFixture.pendingUser().email()));
     }
 
     @Test
@@ -82,9 +88,9 @@ public class UserApplicationServiceTest {
 
         final UserQuery userQuery = userApplicationService.findUserById(UserApplicationServiceTestFixture.userId());
 
-        verify(userRepository).findById(UserApplicationServiceTestFixture.userId());
-
         assertThat(userQuery).isEqualToComparingFieldByFieldRecursively(UserApplicationServiceTestFixture.userQuery());
+
+        verify(userRepository).findById(eq(UserApplicationServiceTestFixture.userId()));
     }
 
     @Test
@@ -94,6 +100,8 @@ public class UserApplicationServiceTest {
 
         assertThatThrownBy(() -> userApplicationService.findUserById(UserApplicationServiceTestFixture.userId()))
                 .isInstanceOf(UserNotFoundException.class);
+
+        verify(userRepository).findById(eq(UserApplicationServiceTestFixture.userId()));
     }
 
     @Test
@@ -105,6 +113,7 @@ public class UserApplicationServiceTest {
 
         userApplicationService.activateUser(UserApplicationServiceTestFixture.userId());
 
+        verify(userRepository).findById(eq(UserApplicationServiceTestFixture.userId()));
         verify(userRepository).save(eq(UserApplicationServiceTestFixture.activeUser()));
     }
 

@@ -91,5 +91,10 @@ public class User implements Serializable {
 
     public void activate() {
         this.status = Status.ACTIVE;
+        publishUserActivatedEvent();
+    }
+
+    private void publishUserActivatedEvent() {
+        EventRegistry.eventPublisher().publish(new UserActivatedEvent(id(), fullName(), email));
     }
 }

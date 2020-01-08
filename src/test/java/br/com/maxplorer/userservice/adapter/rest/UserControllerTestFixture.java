@@ -14,7 +14,7 @@ class UserControllerTestFixture {
     }
 
     static UUID id() {
-        return UUID.randomUUID();
+        return UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13");
     }
 
     static String email() {
