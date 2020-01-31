@@ -39,9 +39,17 @@ public class Password implements Serializable {
     @Column(name = "active")
     private Boolean active;
 
-    public Password(String password) {
-        this.password = new BCryptPasswordEncoder().encode(password);
-        this.active = true;
+    public Password(String password, Boolean active) {
+        this.password = password;
+        this.active = active;
+    }
+
+    public static Password newActivePassword(String password) {
+        return new Password(encryptPassword(password), true);
+    }
+
+    public static String encryptPassword(String password) {
+        return new BCryptPasswordEncoder().encode(password);
     }
 
     static class PasswordId implements Serializable {

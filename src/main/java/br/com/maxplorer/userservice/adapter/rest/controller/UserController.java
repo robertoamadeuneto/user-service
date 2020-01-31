@@ -1,6 +1,7 @@
 package br.com.maxplorer.userservice.adapter.rest.controller;
 
 import br.com.maxplorer.userservice.core.application.user.UserApplicationService;
+import br.com.maxplorer.userservice.core.application.user.command.AuthenticateUserCommand;
 import br.com.maxplorer.userservice.core.application.user.command.NewUserCommand;
 import br.com.maxplorer.userservice.core.application.user.query.UserQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,14 @@ public class UserController {
     public ResponseEntity<Void> activateUser(@PathVariable UUID id) {
 
         userApplicationService.activateUser(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/authentication")
+    public ResponseEntity<UserQuery> authenticateUser(@RequestBody AuthenticateUserCommand command) {
+
+        userApplicationService.authenticateUser(command);
 
         return ResponseEntity.noContent().build();
     }

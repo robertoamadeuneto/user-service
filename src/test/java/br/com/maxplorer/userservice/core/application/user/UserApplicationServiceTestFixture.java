@@ -1,5 +1,6 @@
 package br.com.maxplorer.userservice.core.application.user;
 
+import br.com.maxplorer.userservice.core.application.user.command.AuthenticateUserCommand;
 import br.com.maxplorer.userservice.core.application.user.command.GenreCommand;
 import br.com.maxplorer.userservice.core.application.user.command.NewUserCommand;
 import br.com.maxplorer.userservice.core.application.user.query.GenreQuery;
@@ -40,7 +41,7 @@ class UserApplicationServiceTestFixture {
                 Genre.MALE,
                 "james.gosling@email.com",
                 Status.PENDING,
-                new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
+                Collections.singleton(new Password("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G", true)));
     }
 
     static User activeUser() {
@@ -51,7 +52,7 @@ class UserApplicationServiceTestFixture {
                 Genre.MALE,
                 "james.gosling@email.com",
                 Status.ACTIVE,
-                new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
+                Collections.singleton(new Password("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G", true)));
     }
 
     static UserQuery userQuery() {
@@ -59,5 +60,15 @@ class UserApplicationServiceTestFixture {
                 LocalDate.of(1955, 5, 19),
                 GenreQuery.MALE,
                 "james.gosling@email.com");
+    }
+
+    static AuthenticateUserCommand correctPasswordAuthenticateUserCommand() {
+        return new AuthenticateUserCommand("james.gosling@email.com",
+                "mnb856vcx");
+    }
+
+    static AuthenticateUserCommand wrongPasswordAuthenticateUserCommand() {
+        return new AuthenticateUserCommand("james.gosling@email.com",
+                "jio120pol");
     }
 }

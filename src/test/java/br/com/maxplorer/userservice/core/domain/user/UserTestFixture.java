@@ -2,7 +2,6 @@ package br.com.maxplorer.userservice.core.domain.user;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.UUID;
 
 class UserTestFixture {
@@ -18,7 +17,7 @@ class UserTestFixture {
                 Genre.MALE,
                 "james.gosling@email.com",
                 Status.PENDING,
-                new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
+                Collections.singleton(new Password("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G", true)));
     }
 
     static User activeUser() {
@@ -29,7 +28,7 @@ class UserTestFixture {
                 Genre.MALE,
                 "james.gosling@email.com",
                 Status.ACTIVE,
-                new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
+                Collections.singleton(new Password("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G", true)));
     }
 
     static UserCreatedEvent userCreatedEvent() {

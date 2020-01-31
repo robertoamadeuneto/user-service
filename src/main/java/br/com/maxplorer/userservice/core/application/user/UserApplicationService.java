@@ -1,16 +1,21 @@
 package br.com.maxplorer.userservice.core.application.user;
 
+import br.com.maxplorer.userservice.core.application.user.command.AuthenticateUserCommand;
 import br.com.maxplorer.userservice.core.application.user.command.NewUserCommand;
 import br.com.maxplorer.userservice.core.application.user.query.UserQuery;
 import br.com.maxplorer.userservice.core.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.core.domain.exception.UserNotActiveException;
 import br.com.maxplorer.userservice.core.domain.exception.UserNotFoundException;
+import br.com.maxplorer.userservice.core.domain.exception.WrongEmailOrPasswordException;
 import br.com.maxplorer.userservice.core.domain.exception.constraint.UserEmailAlreadyExistsConstraint;
 import br.com.maxplorer.userservice.core.domain.user.Genre;
+import br.com.maxplorer.userservice.core.domain.user.Password;
 import br.com.maxplorer.userservice.core.domain.user.User;
 import br.com.maxplorer.userservice.core.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -58,5 +63,16 @@ public class UserApplicationService {
         user.activate();
 
         userRepository.save(user);
+    }
+
+    public void authenticateUser(AuthenticateUserCommand command) {
+
+        final Optional<User> user = userRepository.findByEmail(command.email());
+
+        if (!user.isPresent() || !user.get().getActivePassword().password().equals(Password.encryptPassword(command.password()))) {
+            throw new WrongEmailOrPasswordException();
+        } else if (!user.get().isActive()) {
+            throw new UserNotActiveException(command.email());
+        }
     }
 }

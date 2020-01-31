@@ -1,5 +1,6 @@
 package br.com.maxplorer.userservice.adapter.rest;
 
+import br.com.maxplorer.userservice.core.application.user.command.AuthenticateUserCommand;
 import br.com.maxplorer.userservice.core.application.user.command.GenreCommand;
 import br.com.maxplorer.userservice.core.application.user.command.NewUserCommand;
 import br.com.maxplorer.userservice.core.application.user.query.GenreQuery;
@@ -35,5 +36,10 @@ class UserControllerTestFixture {
                 LocalDate.of(1955, 5, 19),
                 GenreQuery.MALE,
                 "james.gosling@email.com");
+    }
+
+    static AuthenticateUserCommand authenticateUserCommand() {
+        return new AuthenticateUserCommand("james.gosling@email.com",
+                "mnb856vcx");
     }
 }

@@ -78,4 +78,24 @@ public class UserTest {
 
         verify(eventPublisher).publish(eq(UserTestFixture.userActivatedEvent()));
     }
+
+    @Test
+    public void shouldVerifyThatUserIsActive() {
+
+        final User user = UserTestFixture.activeUser();
+
+        final boolean isActive = user.isActive();
+
+        assertThat(isActive).isTrue();
+    }
+
+    @Test
+    public void shouldVerifyThatUserIsNotActive() {
+
+        final User user = UserTestFixture.pendingUser();
+
+        final boolean isActive = user.isActive();
+
+        assertThat(isActive).isFalse();
+    }
 }

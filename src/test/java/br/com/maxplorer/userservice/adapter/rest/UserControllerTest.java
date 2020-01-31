@@ -3,7 +3,9 @@ package br.com.maxplorer.userservice.adapter.rest;
 import br.com.maxplorer.userservice.adapter.rest.controller.UserController;
 import br.com.maxplorer.userservice.core.application.user.UserApplicationService;
 import br.com.maxplorer.userservice.core.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.core.domain.exception.UserNotActiveException;
 import br.com.maxplorer.userservice.core.domain.exception.UserNotFoundException;
+import br.com.maxplorer.userservice.core.domain.exception.WrongEmailOrPasswordException;
 import br.com.maxplorer.userservice.core.domain.exception.constraint.UserEmailAlreadyExistsConstraint;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -115,5 +117,44 @@ public class UserControllerTest {
                 .andExpect(status().isNotFound());
 
         verify(userApplicationService).activateUser(eq(UserControllerTestFixture.id()));
+    }
+
+    @Test
+    public void shouldAuthenticateUser() throws Exception {
+
+        doNothing().when(userApplicationService).authenticateUser(any());
+
+        mockMvc.perform(post("/v1/users/authentication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(UserControllerTestFixture.authenticateUserCommand())))
+                .andExpect(status().isNoContent());
+
+        verify(userApplicationService).authenticateUser(eq(UserControllerTestFixture.authenticateUserCommand()));
+    }
+
+    @Test
+    public void shouldReturnHttpStatus401WhenTryingToAuthenticateUserWithWrongEmailOrPassword() throws Exception {
+
+        doThrow(WrongEmailOrPasswordException.class).when(userApplicationService).authenticateUser(any());
+
+        mockMvc.perform(post("/v1/users/authentication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(UserControllerTestFixture.authenticateUserCommand())))
+                .andExpect(status().isUnauthorized());
+
+        verify(userApplicationService).authenticateUser(eq(UserControllerTestFixture.authenticateUserCommand()));
+    }
+
+    @Test
+    public void shouldReturnHttpStatus401WhenTryingToAuthenticateUserNotActive() throws Exception {
+
+        doThrow(UserNotActiveException.class).when(userApplicationService).authenticateUser(any());
+
+        mockMvc.perform(post("/v1/users/authentication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(UserControllerTestFixture.authenticateUserCommand())))
+                .andExpect(status().isUnauthorized());
+
+        verify(userApplicationService).authenticateUser(eq(UserControllerTestFixture.authenticateUserCommand()));
     }
 }

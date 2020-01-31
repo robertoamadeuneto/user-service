@@ -19,7 +19,6 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -74,7 +73,7 @@ public class User implements Serializable {
                 genre,
                 email,
                 Status.PENDING,
-                new HashSet<>(Collections.singletonList(new Password(password))));
+                Collections.singleton(Password.newActivePassword(password)));
 
         newUser.publishUserCreatedEvent();
 
@@ -96,5 +95,13 @@ public class User implements Serializable {
 
     private void publishUserActivatedEvent() {
         EventRegistry.eventPublisher().publish(new UserActivatedEvent(id(), fullName(), email));
+    }
+
+    public boolean isActive() {
+        return status.equals(Status.ACTIVE);
+    }
+
+    public Password getActivePassword() {
+        return passwords.stream().filter(Password::active).findFirst().orElse(null);
     }
 }

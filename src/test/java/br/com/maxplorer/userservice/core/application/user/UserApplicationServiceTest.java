@@ -1,10 +1,13 @@
 package br.com.maxplorer.userservice.core.application.user;
 
+import br.com.maxplorer.userservice.core.application.user.command.AuthenticateUserCommand;
 import br.com.maxplorer.userservice.core.application.user.query.UserQuery;
 import br.com.maxplorer.userservice.core.domain.event.EventPublisher;
 import br.com.maxplorer.userservice.core.domain.event.EventRegistry;
 import br.com.maxplorer.userservice.core.domain.exception.UserEmailAlreadyExistsException;
+import br.com.maxplorer.userservice.core.domain.exception.UserNotActiveException;
 import br.com.maxplorer.userservice.core.domain.exception.UserNotFoundException;
+import br.com.maxplorer.userservice.core.domain.exception.WrongEmailOrPasswordException;
 import br.com.maxplorer.userservice.core.domain.user.Password;
 import br.com.maxplorer.userservice.core.domain.user.User;
 import br.com.maxplorer.userservice.core.domain.user.UserRepository;
@@ -16,7 +19,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -124,5 +126,52 @@ public class UserApplicationServiceTest {
 
         assertThatThrownBy(() -> userApplicationService.activateUser(UserApplicationServiceTestFixture.userId()))
                 .isInstanceOf(UserNotFoundException.class);
+    }
+
+    @Test
+    public void shouldAuthenticateUser() {
+
+        final User activeUser = UserApplicationServiceTestFixture.activeUser();
+
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(activeUser));
+
+        userApplicationService.authenticateUser(UserApplicationServiceTestFixture.correctPasswordAuthenticateUserCommand());
+
+        verify(userRepository).findByEmail(eq(UserApplicationServiceTestFixture.activeUser().email()));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToAuthenticateUserWithWrongEmail() {
+
+        when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userApplicationService.authenticateUser(UserApplicationServiceTestFixture.correctPasswordAuthenticateUserCommand()))
+                .isInstanceOf(WrongEmailOrPasswordException.class);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToAuthenticateUserWithWrongPassword() {
+
+        when(bCryptPasswordEncoder.encode(any())).thenReturn("$2y$12$RkCwPKPGMdkbqFi1WRalheJBwEriBqYC3Xa1ovQ2nMF9pQFadXK.G");
+
+        final User activeUser = UserApplicationServiceTestFixture.activeUser();
+
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(activeUser));
+
+        final AuthenticateUserCommand command = UserApplicationServiceTestFixture.wrongPasswordAuthenticateUserCommand();
+
+        assertThatThrownBy(() -> userApplicationService.authenticateUser(command))
+                .isInstanceOf(WrongEmailOrPasswordException.class);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToAuthenticateUserThatIsNotActive() {
+
+        final User pendingUser = UserApplicationServiceTestFixture.pendingUser();
+
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(pendingUser));
+
+        assertThatThrownBy(() -> userApplicationService.authenticateUser(UserApplicationServiceTestFixture.correctPasswordAuthenticateUserCommand()))
+                .isInstanceOf(UserNotActiveException.class);
     }
 }

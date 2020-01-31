@@ -23,6 +23,6 @@ class UserRepositoryJpaTestFixture {
                 Genre.MALE,
                 "james.gosling@email.com",
                 Status.PENDING,
-                new HashSet<>(Collections.singletonList(new Password("mnb856vcx"))));
+                Collections.singleton(new Password("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G", true)));
     }
 }
