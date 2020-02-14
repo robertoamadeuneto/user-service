@@ -46,22 +46,22 @@ public class UserApplicationServiceTest {
     private UserApplicationService userApplicationService;
 
     @Before
-    public void setUp() throws Exception {
-        whenNew(BCryptPasswordEncoder.class).withAnyArguments().thenReturn(bCryptPasswordEncoder);
-        when(bCryptPasswordEncoder.encode(any())).thenReturn("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G");
+    public void setUp() {
         EventRegistry.defineEventPublisher(eventPublisher);
         userApplicationService = new UserApplicationService(userRepository);
     }
 
     @Test
-    public void shouldRegisterNewUser() {
+    public void shouldRegisterNewUser() throws Exception {
 
+        whenNew(BCryptPasswordEncoder.class).withAnyArguments().thenReturn(bCryptPasswordEncoder);
+        when(bCryptPasswordEncoder.encode(any())).thenReturn("$2a$10$HidlcwMBogXEH9rkAITAGuT4MDZHf/iWdKrbkOgZHL/fajwfMweWO");
         when(userRepository.findByEmail(UserApplicationServiceTestFixture.newUserCommand().email())).thenReturn(Optional.empty());
-        when(userRepository.newId()).thenReturn(UserApplicationServiceTestFixture.userId());
+        when(userRepository.newId()).thenReturn(UserApplicationServiceTestFixture.pendingUser().id());
 
         final UUID newUserId = userApplicationService.registerNewUser(UserApplicationServiceTestFixture.newUserCommand());
 
-        assertThat(newUserId).isEqualTo(UserApplicationServiceTestFixture.userId());
+        assertThat(newUserId).isEqualTo(UserApplicationServiceTestFixture.pendingUser().id());
 
         verify(userRepository).findByEmail(UserApplicationServiceTestFixture.newUserCommand().email());
         verify(userRepository).newId();
@@ -88,11 +88,11 @@ public class UserApplicationServiceTest {
 
         when(userRepository.findById(any())).thenReturn(Optional.of(pendingUser));
 
-        final UserQuery userQuery = userApplicationService.findUserById(UserApplicationServiceTestFixture.userId());
+        final UserQuery userQuery = userApplicationService.findUserById(UserApplicationServiceTestFixture.pendingUser().id());
 
         assertThat(userQuery).isEqualToComparingFieldByFieldRecursively(UserApplicationServiceTestFixture.userQuery());
 
-        verify(userRepository).findById(eq(UserApplicationServiceTestFixture.userId()));
+        verify(userRepository).findById(eq(UserApplicationServiceTestFixture.pendingUser().id()));
     }
 
     @Test
@@ -100,10 +100,10 @@ public class UserApplicationServiceTest {
 
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userApplicationService.findUserById(UserApplicationServiceTestFixture.userId()))
+        assertThatThrownBy(() -> userApplicationService.findUserById(UserApplicationServiceTestFixture.pendingUser().id()))
                 .isInstanceOf(UserNotFoundException.class);
 
-        verify(userRepository).findById(eq(UserApplicationServiceTestFixture.userId()));
+        verify(userRepository).findById(eq(UserApplicationServiceTestFixture.pendingUser().id()));
     }
 
     @Test
@@ -113,9 +113,9 @@ public class UserApplicationServiceTest {
 
         when(userRepository.findById(any())).thenReturn(Optional.of(pendingUser));
 
-        userApplicationService.activateUser(UserApplicationServiceTestFixture.userId());
+        userApplicationService.activateUser(UserApplicationServiceTestFixture.pendingUser().id());
 
-        verify(userRepository).findById(eq(UserApplicationServiceTestFixture.userId()));
+        verify(userRepository).findById(eq(UserApplicationServiceTestFixture.pendingUser().id()));
         verify(userRepository).save(eq(UserApplicationServiceTestFixture.activeUser()));
     }
 
@@ -124,7 +124,7 @@ public class UserApplicationServiceTest {
 
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userApplicationService.activateUser(UserApplicationServiceTestFixture.userId()))
+        assertThatThrownBy(() -> userApplicationService.activateUser(UserApplicationServiceTestFixture.pendingUser().id()))
                 .isInstanceOf(UserNotFoundException.class);
     }
 
@@ -135,7 +135,9 @@ public class UserApplicationServiceTest {
 
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(activeUser));
 
-        userApplicationService.authenticateUser(UserApplicationServiceTestFixture.correctPasswordAuthenticateUserCommand());
+        final UserQuery query = userApplicationService.authenticateUser(UserApplicationServiceTestFixture.correctPasswordAuthenticateUserCommand());
+
+        assertThat(query).isEqualToComparingFieldByFieldRecursively(UserApplicationServiceTestFixture.userQuery());
 
         verify(userRepository).findByEmail(eq(UserApplicationServiceTestFixture.activeUser().email()));
     }
@@ -151,8 +153,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenTryingToAuthenticateUserWithWrongPassword() {
-
-        when(bCryptPasswordEncoder.encode(any())).thenReturn("$2y$12$RkCwPKPGMdkbqFi1WRalheJBwEriBqYC3Xa1ovQ2nMF9pQFadXK.G");
 
         final User activeUser = UserApplicationServiceTestFixture.activeUser();
 

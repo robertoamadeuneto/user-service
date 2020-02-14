@@ -14,25 +14,18 @@ class UserControllerTestFixture {
     private UserControllerTestFixture() {
     }
 
-    static UUID id() {
-        return UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13");
-    }
-
-    static String email() {
-        return "james.gosling@email.com";
-    }
-
     static NewUserCommand newUserCommand() {
         return new NewUserCommand("James",
                 "Gosling",
                 LocalDate.of(1955, 5, 19),
                 GenreCommand.MALE,
-                email(),
+                "james.gosling@email.com",
                 "mnb856vcx");
     }
 
     static UserQuery userQuery() {
-        return new UserQuery("James Gosling",
+        return new UserQuery(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
+                "James Gosling",
                 LocalDate.of(1955, 5, 19),
                 GenreQuery.MALE,
                 "james.gosling@email.com");

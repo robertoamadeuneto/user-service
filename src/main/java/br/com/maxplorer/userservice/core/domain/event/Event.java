@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@JsonIgnoreProperties({"eventId", "aggregateId", "eventType", "eventVersion", "occurredOn"})
+@JsonIgnoreProperties({"eventId", "aggregateId", "eventType", "eventVersion", "occurredOn", "applicationName"})
 public interface Event {
 
     default UUID eventId() {
@@ -20,5 +20,9 @@ public interface Event {
 
     default OffsetDateTime occurredOn() {
         return OffsetDateTime.now();
+    }
+
+    default String applicationName() {
+        return "user-service";
     }
 }

@@ -42,6 +42,7 @@ public class MessagingStream implements EventPublisher {
                 .setHeader("eventType", event.eventType())
                 .setHeader("eventVersion", event.eventVersion())
                 .setHeader("occurredOn", event.occurredOn())
+                .setHeader("applicationName", event.applicationName())
                 .build());
     }
 
@@ -60,6 +61,7 @@ public class MessagingStream implements EventPublisher {
                 event.eventType(),
                 event.eventVersion(),
                 event.occurredOn(),
+                event.applicationName(),
                 eventPayload);
     }
 }

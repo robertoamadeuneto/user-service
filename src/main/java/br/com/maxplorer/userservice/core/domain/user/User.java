@@ -101,7 +101,7 @@ public class User implements Serializable {
         return status.equals(Status.ACTIVE);
     }
 
-    public Password getActivePassword() {
-        return passwords.stream().filter(Password::active).findFirst().orElse(null);
+    public boolean isPasswordValid(String password) {
+        return passwords.stream().filter(Password::active).findFirst().get().matches(password);
     }
 }

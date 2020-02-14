@@ -37,6 +37,9 @@ public class EventStore {
     @Column(name = "occurred_on")
     private OffsetDateTime occurredOn;
 
+    @Column(name = "application_name")
+    private String applicationName;
+
     @Type(type = "jsonb")
     @Column(name = "payload")
     private String payload;

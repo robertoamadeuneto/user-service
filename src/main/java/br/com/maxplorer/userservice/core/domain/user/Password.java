@@ -45,11 +45,11 @@ public class Password implements Serializable {
     }
 
     public static Password newActivePassword(String password) {
-        return new Password(encryptPassword(password), true);
+        return new Password(new BCryptPasswordEncoder().encode(password), true);
     }
 
-    public static String encryptPassword(String password) {
-        return new BCryptPasswordEncoder().encode(password);
+    public boolean matches(String password) {
+        return new BCryptPasswordEncoder().matches(password, this.password);
     }
 
     static class PasswordId implements Serializable {

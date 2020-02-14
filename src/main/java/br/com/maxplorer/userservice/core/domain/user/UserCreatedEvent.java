@@ -8,6 +8,6 @@ import java.util.UUID;
 public class UserCreatedEvent extends UserEvent {
 
     public UserCreatedEvent(UUID id, String fullName, String email) {
-        super("user.created", id, fullName, email);
+        super("user-service.user.created", id, fullName, email);
     }
 }

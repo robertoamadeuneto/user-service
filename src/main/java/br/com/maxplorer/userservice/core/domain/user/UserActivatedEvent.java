@@ -8,6 +8,6 @@ import java.util.UUID;
 public class UserActivatedEvent extends UserEvent {
 
     public UserActivatedEvent(UUID id, String fullName, String email) {
-        super("user.activated", id, fullName, email);
+        super("user-service.user.activated", id, fullName, email);
     }
 }

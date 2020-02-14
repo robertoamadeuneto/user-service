@@ -17,7 +17,7 @@ class UserTestFixture {
                 Genre.MALE,
                 "james.gosling@email.com",
                 Status.PENDING,
-                Collections.singleton(new Password("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G", true)));
+                Collections.singleton(new Password("$2a$10$HidlcwMBogXEH9rkAITAGuT4MDZHf/iWdKrbkOgZHL/fajwfMweWO", true)));
     }
 
     static User activeUser() {
@@ -28,7 +28,7 @@ class UserTestFixture {
                 Genre.MALE,
                 "james.gosling@email.com",
                 Status.ACTIVE,
-                Collections.singleton(new Password("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G", true)));
+                Collections.singleton(new Password("$2a$10$HidlcwMBogXEH9rkAITAGuT4MDZHf/iWdKrbkOgZHL/fajwfMweWO", true)));
     }
 
     static UserCreatedEvent userCreatedEvent() {

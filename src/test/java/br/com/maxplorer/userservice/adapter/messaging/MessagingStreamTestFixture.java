@@ -10,6 +10,6 @@ class MessagingStreamTestFixture {
     }
 
     static UserCreatedEvent userCreatedEvent() {
-        return new UserCreatedEvent(UUID.randomUUID(), "James Gosling", "james.gosling@email.com");
+        return new UserCreatedEvent(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"), "James Gosling", "james.gosling@email.com");
     }
 }

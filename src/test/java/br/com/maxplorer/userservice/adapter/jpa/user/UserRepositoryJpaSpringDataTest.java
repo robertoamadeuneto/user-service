@@ -43,13 +43,13 @@ public class UserRepositoryJpaSpringDataTest {
     @After
     public void tearDown() {
         JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "password", "cast(user_id as uuid)=?", UserRepositoryJpaSpringDataTestFixture.user().id());
-        JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "\"user\"", "email=?", UserRepositoryJpaSpringDataTestFixture.email());
+        JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "\"user\"", "email=?", UserRepositoryJpaSpringDataTestFixture.user().email());
     }
 
     @Test
     public void shouldFindByEmail() {
 
-        final Optional<User> user = userRepositoryJpaSpringData.findByEmail(UserRepositoryJpaSpringDataTestFixture.email());
+        final Optional<User> user = userRepositoryJpaSpringData.findByEmail(UserRepositoryJpaSpringDataTestFixture.user().email());
 
         assertThat(user).isPresent();
         assertThat(user.get()).isEqualToComparingFieldByFieldRecursively(UserRepositoryJpaSpringDataTestFixture.user());

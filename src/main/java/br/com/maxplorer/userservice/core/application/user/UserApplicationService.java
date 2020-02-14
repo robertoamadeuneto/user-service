@@ -9,7 +9,6 @@ import br.com.maxplorer.userservice.core.domain.exception.UserNotFoundException;
 import br.com.maxplorer.userservice.core.domain.exception.WrongEmailOrPasswordException;
 import br.com.maxplorer.userservice.core.domain.exception.constraint.UserEmailAlreadyExistsConstraint;
 import br.com.maxplorer.userservice.core.domain.user.Genre;
-import br.com.maxplorer.userservice.core.domain.user.Password;
 import br.com.maxplorer.userservice.core.domain.user.User;
 import br.com.maxplorer.userservice.core.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,14 +64,16 @@ public class UserApplicationService {
         userRepository.save(user);
     }
 
-    public void authenticateUser(AuthenticateUserCommand command) {
+    public UserQuery authenticateUser(AuthenticateUserCommand command) {
 
         final Optional<User> user = userRepository.findByEmail(command.email());
 
-        if (!user.isPresent() || !user.get().getActivePassword().password().equals(Password.encryptPassword(command.password()))) {
+        if (!user.isPresent() || !user.get().isPasswordValid(command.password())) {
             throw new WrongEmailOrPasswordException();
         } else if (!user.get().isActive()) {
             throw new UserNotActiveException(command.email());
         }
+
+        return UserQuery.from(user.get());
     }
 }

@@ -55,8 +55,8 @@ public class UserController {
     @PostMapping("/authentication")
     public ResponseEntity<UserQuery> authenticateUser(@RequestBody AuthenticateUserCommand command) {
 
-        userApplicationService.authenticateUser(command);
+        final UserQuery query = userApplicationService.authenticateUser(command);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(query);
     }
 }

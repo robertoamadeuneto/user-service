@@ -60,7 +60,7 @@ public class UserControllerTest {
     public void shouldReturnHttpStatus400WhenTryingToRegisterNewUserAndUserEmailAlreadyExists() throws Exception {
 
         when(userApplicationService.registerNewUser(any()))
-                .thenThrow(new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", UserControllerTestFixture.email())));
+                .thenThrow(new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", UserControllerTestFixture.newUserCommand().email())));
 
         mockMvc.perform(post("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -75,12 +75,12 @@ public class UserControllerTest {
 
         when(userApplicationService.findUserById(any())).thenReturn(UserControllerTestFixture.userQuery());
 
-        mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.id())
+        mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.userQuery().getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(UserControllerTestFixture.userQuery())));
 
-        verify(userApplicationService).findUserById(eq(UserControllerTestFixture.id()));
+        verify(userApplicationService).findUserById(eq(UserControllerTestFixture.userQuery().getId()));
     }
 
     @Test
@@ -88,11 +88,11 @@ public class UserControllerTest {
 
         when(userApplicationService.findUserById(any())).thenThrow(UserNotFoundException.class);
 
-        mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.id())
+        mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.userQuery().getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
-        verify(userApplicationService).findUserById(eq(UserControllerTestFixture.id()));
+        verify(userApplicationService).findUserById(eq(UserControllerTestFixture.userQuery().getId()));
     }
 
     @Test
@@ -100,11 +100,11 @@ public class UserControllerTest {
 
         doNothing().when(userApplicationService).activateUser(any());
 
-        mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.id() + "/activation")
+        mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.userQuery().getId() + "/activation")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        verify(userApplicationService).activateUser(eq(UserControllerTestFixture.id()));
+        verify(userApplicationService).activateUser(eq(UserControllerTestFixture.userQuery().getId()));
     }
 
     @Test
@@ -112,22 +112,23 @@ public class UserControllerTest {
 
         doThrow(UserNotFoundException.class).when(userApplicationService).activateUser(any());
 
-        mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.id() + "/activation")
+        mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.userQuery().getId() + "/activation")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
-        verify(userApplicationService).activateUser(eq(UserControllerTestFixture.id()));
+        verify(userApplicationService).activateUser(eq(UserControllerTestFixture.userQuery().getId()));
     }
 
     @Test
     public void shouldAuthenticateUser() throws Exception {
 
-        doNothing().when(userApplicationService).authenticateUser(any());
+        when(userApplicationService.authenticateUser(any())).thenReturn(UserControllerTestFixture.userQuery());
 
         mockMvc.perform(post("/v1/users/authentication")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(UserControllerTestFixture.authenticateUserCommand())))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(UserControllerTestFixture.userQuery())));
 
         verify(userApplicationService).authenticateUser(eq(UserControllerTestFixture.authenticateUserCommand()));
     }

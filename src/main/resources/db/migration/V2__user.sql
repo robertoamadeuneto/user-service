@@ -30,5 +30,5 @@ create table password (
 );
 
 insert into event_type (event_type_id) values
-('user.created'),
-('user.activated');
+('user-service.user.created'),
+('user-service.user.activated');

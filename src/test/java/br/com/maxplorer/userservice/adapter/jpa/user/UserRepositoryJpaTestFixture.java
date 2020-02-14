@@ -16,13 +16,13 @@ class UserRepositoryJpaTestFixture {
     }
 
     static User user() {
-        return new User(UUID.fromString("d403f15c-516d-4b21-b6dd-1cc59c673c6c"),
+        return new User(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
                 "James",
                 "Gosling",
                 LocalDate.of(1955, 5, 19),
                 Genre.MALE,
                 "james.gosling@email.com",
                 Status.PENDING,
-                Collections.singleton(new Password("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G", true)));
+                Collections.singleton(new Password("$2a$10$HidlcwMBogXEH9rkAITAGuT4MDZHf/iWdKrbkOgZHL/fajwfMweWO", true)));
     }
 }

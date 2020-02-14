@@ -31,14 +31,15 @@ public class UserTest {
     private EventPublisher eventPublisher;
 
     @Before
-    public void setUp() throws Exception {
-        whenNew(BCryptPasswordEncoder.class).withAnyArguments().thenReturn(bCryptPasswordEncoder);
-        when(bCryptPasswordEncoder.encode(any())).thenReturn("$2y$12$V3ClcTwpJUbxOcw3gA.UG.NRC2brBJBkZKLiiCxdQFrsEEAlWKt2G");
+    public void setUp() {
         EventRegistry.defineEventPublisher(eventPublisher);
     }
 
     @Test
-    public void shouldReturnNewUser() {
+    public void shouldReturnNewUser() throws Exception {
+
+        whenNew(BCryptPasswordEncoder.class).withAnyArguments().thenReturn(bCryptPasswordEncoder);
+        when(bCryptPasswordEncoder.encode(any())).thenReturn("$2a$10$HidlcwMBogXEH9rkAITAGuT4MDZHf/iWdKrbkOgZHL/fajwfMweWO");
 
         final User newUser = User.newUser(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"),
                 "James",
@@ -62,7 +63,8 @@ public class UserTest {
                 LocalDate.of(1955, 5, 19),
                 Genre.MALE,
                 "james.gosling@email.com",
-                "mnb856vcx").fullName();
+                "mnb856vcx")
+                .fullName();
 
         assertThat(fullName).isEqualTo("James Gosling");
     }
@@ -97,5 +99,25 @@ public class UserTest {
         final boolean isActive = user.isActive();
 
         assertThat(isActive).isFalse();
+    }
+
+    @Test
+    public void shouldVerifyThatPasswordIsValid() {
+
+        final User user = UserTestFixture.pendingUser();
+
+        final boolean isPasswordValid = user.isPasswordValid("mnb856vcx");
+
+        assertThat(isPasswordValid).isTrue();
+    }
+
+    @Test
+    public void shouldVerifyThatPasswordIsInvalid() {
+
+        final User user = UserTestFixture.pendingUser();
+
+        final boolean isPasswordValid = user.isPasswordValid("jio120pol");
+
+        assertThat(isPasswordValid).isFalse();
     }
 }
