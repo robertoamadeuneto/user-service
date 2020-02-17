@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class EventStoreRepositoryJpa implements EventStoreRepository {
 
-    private EventStoreRepositoryJpaSpringData eventStoreRepositoryJpaSpringData;
+    private final EventStoreRepositoryJpaSpringData eventStoreRepositoryJpaSpringData;
 
     @Autowired
     public EventStoreRepositoryJpa(EventStoreRepositoryJpaSpringData eventStoreRepositoryJpaSpringData) {

@@ -20,8 +20,12 @@ import java.util.UUID;
 @RequestMapping("/v1/users")
 public class UserController {
 
+    private final UserApplicationService userApplicationService;
+
     @Autowired
-    private UserApplicationService userApplicationService;
+    public UserController(UserApplicationService userApplicationService) {
+        this.userApplicationService = userApplicationService;
+    }
 
     @PostMapping
     public ResponseEntity<Void> registerNewUser(@RequestBody NewUserCommand command) {
