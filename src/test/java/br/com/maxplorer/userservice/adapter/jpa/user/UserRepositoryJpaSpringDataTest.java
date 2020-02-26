@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Optional;
@@ -34,10 +33,7 @@ public class UserRepositoryJpaSpringDataTest {
 
     @Before
     public void setUp() {
-        transactionTemplate.execute((TransactionCallback<User>) status -> {
-            userRepositoryJpaSpringData.save(UserRepositoryJpaSpringDataTestFixture.user());
-            return null;
-        });
+        transactionTemplate.execute(status -> userRepositoryJpaSpringData.save(UserRepositoryJpaSpringDataTestFixture.user()));
     }
 
     @After
@@ -49,9 +45,17 @@ public class UserRepositoryJpaSpringDataTest {
     @Test
     public void shouldFindByEmail() {
 
-        final Optional<User> user = userRepositoryJpaSpringData.findByEmail(UserRepositoryJpaSpringDataTestFixture.user().email());
+        final Optional<User> foundUser = userRepositoryJpaSpringData.findByEmail(UserRepositoryJpaSpringDataTestFixture.user().email());
 
-        assertThat(user).isPresent();
-        assertThat(user.get()).isEqualToComparingFieldByFieldRecursively(UserRepositoryJpaSpringDataTestFixture.user());
+        assertThat(foundUser).isPresent();
+        assertThat(foundUser.get()).isEqualToComparingFieldByFieldRecursively(UserRepositoryJpaSpringDataTestFixture.user());
+    }
+
+    @Test
+    public void shouldNotFindByEmail() {
+
+        final Optional<User> foundUser = userRepositoryJpaSpringData.findByEmail("invalid@email.com");
+
+        assertThat(foundUser).isNotPresent();
     }
 }

@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,6 +33,7 @@ public class UserRepositoryJpaTest {
     public void shouldFindByEmail() {
 
         final User user = UserRepositoryJpaTestFixture.user();
+
         when(userRepositoryJpaSpringData.findByEmail(any())).thenReturn(Optional.of(user));
 
         final Optional<User> foundUser = userRepositoryJpa.findByEmail("james.gosling@email.com");
@@ -40,6 +42,18 @@ public class UserRepositoryJpaTest {
         assertThat(foundUser.get()).isEqualToComparingFieldByFieldRecursively(UserRepositoryJpaTestFixture.user());
 
         verify(userRepositoryJpaSpringData).findByEmail(same(user.email()));
+    }
+
+    @Test
+    public void shouldNotFindByEmail() {
+
+        when(userRepositoryJpaSpringData.findByEmail(any())).thenReturn(Optional.empty());
+
+        final Optional<User> foundUser = userRepositoryJpa.findByEmail("james.gosling@email.com");
+
+        assertThat(foundUser).isEmpty();
+
+        verify(userRepositoryJpaSpringData).findByEmail(eq("james.gosling@email.com"));
     }
 
     @Test
