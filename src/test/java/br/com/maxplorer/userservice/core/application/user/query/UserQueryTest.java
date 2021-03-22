@@ -8,7 +8,6 @@ public class UserQueryTest {
 
     @Test
     public void shouldReturnUserQuery() {
-
         final UserQuery userQuery = UserQuery.from(UserQueryTestFixture.user());
 
         assertThat(userQuery).isEqualToComparingFieldByFieldRecursively(UserQueryTestFixture.userQuery());

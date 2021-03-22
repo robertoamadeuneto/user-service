@@ -5,7 +5,7 @@ import br.com.maxplorer.userservice.core.domain.exception.UserNotActiveException
 import br.com.maxplorer.userservice.core.domain.exception.UserNotFoundException;
 import br.com.maxplorer.userservice.core.domain.exception.WrongEmailOrPasswordException;
 import br.com.maxplorer.userservice.core.domain.exception.constraint.ConstraintViolationException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -15,15 +15,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Collections;
 
+@AllArgsConstructor
 @RestControllerAdvice
 public class RestExceptionHandler {
 
     private final MessageSource messageSource;
-
-    @Autowired
-    public RestExceptionHandler(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     @ExceptionHandler(UserEmailAlreadyExistsException.class)
     public ResponseEntity<RestExceptionDetails> handleUserEmailAlreadyExistsException(UserEmailAlreadyExistsException exception) {

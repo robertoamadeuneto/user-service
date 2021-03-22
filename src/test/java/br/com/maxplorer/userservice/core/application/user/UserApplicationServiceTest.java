@@ -53,7 +53,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldRegisterNewUser() throws Exception {
-
         whenNew(BCryptPasswordEncoder.class).withAnyArguments().thenReturn(bCryptPasswordEncoder);
         when(bCryptPasswordEncoder.encode(any())).thenReturn("$2a$10$HidlcwMBogXEH9rkAITAGuT4MDZHf/iWdKrbkOgZHL/fajwfMweWO");
         when(userRepository.findByEmail(UserApplicationServiceTestFixture.newUserCommand().email())).thenReturn(Optional.empty());
@@ -70,7 +69,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenTryingToRegisterNewUserWithAnEmailAlreadyInUse() {
-
         final User pendingUser = UserApplicationServiceTestFixture.pendingUser();
 
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(pendingUser));
@@ -83,7 +81,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldFindUserById() {
-
         final User pendingUser = UserApplicationServiceTestFixture.pendingUser();
 
         when(userRepository.findById(any())).thenReturn(Optional.of(pendingUser));
@@ -97,7 +94,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenTryingToFindUserWithNonExistentId() {
-
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userApplicationService.findUserById(UserApplicationServiceTestFixture.pendingUser().id()))
@@ -108,7 +104,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldActivateUser() {
-
         final User pendingUser = UserApplicationServiceTestFixture.pendingUser();
 
         when(userRepository.findById(any())).thenReturn(Optional.of(pendingUser));
@@ -121,7 +116,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenTryingToActivateUserWithNonExistentId() {
-
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userApplicationService.activateUser(UserApplicationServiceTestFixture.pendingUser().id()))
@@ -130,7 +124,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldAuthenticateUser() {
-
         final User activeUser = UserApplicationServiceTestFixture.activeUser();
 
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(activeUser));
@@ -144,7 +137,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenTryingToAuthenticateUserWithWrongEmail() {
-
         when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userApplicationService.authenticateUser(UserApplicationServiceTestFixture.correctPasswordAuthenticateUserCommand()))
@@ -153,7 +145,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenTryingToAuthenticateUserWithWrongPassword() {
-
         final User activeUser = UserApplicationServiceTestFixture.activeUser();
 
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(activeUser));
@@ -166,7 +157,6 @@ public class UserApplicationServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenTryingToAuthenticateUserThatIsNotActive() {
-
         final User pendingUser = UserApplicationServiceTestFixture.pendingUser();
 
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(pendingUser));

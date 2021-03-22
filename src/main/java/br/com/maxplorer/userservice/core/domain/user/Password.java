@@ -44,11 +44,11 @@ public class Password implements Serializable {
         this.active = active;
     }
 
-    public static Password newActivePassword(String password) {
+    public static Password newActivePassword(final String password) {
         return new Password(new BCryptPasswordEncoder().encode(password), true);
     }
 
-    public boolean matches(String password) {
+    public boolean matches(final String password) {
         return new BCryptPasswordEncoder().matches(password, this.password);
     }
 

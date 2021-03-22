@@ -35,7 +35,6 @@ public class MessagingStreamTest {
 
     @Test
     public void shouldPublishUserCreatedEvent() throws InterruptedException, IOException {
-
         final UserCreatedEvent event = MessagingStreamTestFixture.userCreatedEvent();
 
         publisher.publish(event);

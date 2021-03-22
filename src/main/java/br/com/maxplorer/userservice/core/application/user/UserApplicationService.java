@@ -11,24 +11,19 @@ import br.com.maxplorer.userservice.core.domain.exception.constraint.UserEmailAl
 import br.com.maxplorer.userservice.core.domain.user.Genre;
 import br.com.maxplorer.userservice.core.domain.user.User;
 import br.com.maxplorer.userservice.core.domain.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@AllArgsConstructor
 @Service
 public class UserApplicationService {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    public UserApplicationService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public UUID registerNewUser(NewUserCommand command) {
-
+    public UUID registerNewUser(final NewUserCommand command) {
         userRepository.findByEmail(command.email()).ifPresent(u -> {
             throw new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", u.email()));
         });
@@ -46,16 +41,14 @@ public class UserApplicationService {
         return user.id();
     }
 
-    public UserQuery findUserById(UUID id) {
-
+    public UserQuery findUserById(final UUID id) {
         final User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id.toString()));
 
         return UserQuery.from(user);
     }
 
-    public void activateUser(UUID id) {
-
+    public void activateUser(final UUID id) {
         final User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id.toString()));
 
@@ -64,8 +57,7 @@ public class UserApplicationService {
         userRepository.save(user);
     }
 
-    public UserQuery authenticateUser(AuthenticateUserCommand command) {
-
+    public UserQuery authenticateUser(final AuthenticateUserCommand command) {
         final Optional<User> user = userRepository.findByEmail(command.email());
 
         if (!user.isPresent() || !user.get().isPasswordValid(command.password())) {

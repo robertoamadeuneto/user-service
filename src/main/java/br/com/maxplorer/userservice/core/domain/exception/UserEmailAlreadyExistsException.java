@@ -5,7 +5,7 @@ import br.com.maxplorer.userservice.core.domain.exception.constraint.ConstraintV
 
 public class UserEmailAlreadyExistsException extends ConstraintViolationException {
 
-    public UserEmailAlreadyExistsException(Constraint constraint) {
+    public UserEmailAlreadyExistsException(final Constraint constraint) {
         super(constraint);
     }
 }

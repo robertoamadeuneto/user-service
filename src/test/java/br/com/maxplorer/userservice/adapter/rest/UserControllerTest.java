@@ -45,7 +45,6 @@ public class UserControllerTest {
 
     @Test
     public void shouldRegisterNewUser() throws Exception {
-
         when(userApplicationService.registerNewUser(any())).thenReturn(UUID.fromString("8089c74f-c660-4c68-9697-4a03144b8e13"));
 
         mockMvc.perform(post("/v1/users")
@@ -58,7 +57,6 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturnHttpStatus400WhenTryingToRegisterNewUserAndUserEmailAlreadyExists() throws Exception {
-
         when(userApplicationService.registerNewUser(any()))
                 .thenThrow(new UserEmailAlreadyExistsException(new UserEmailAlreadyExistsConstraint("email", UserControllerTestFixture.newUserCommand().email())));
 
@@ -72,7 +70,6 @@ public class UserControllerTest {
 
     @Test
     public void shouldFindUserById() throws Exception {
-
         when(userApplicationService.findUserById(any())).thenReturn(UserControllerTestFixture.userQuery());
 
         mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.userQuery().getId())
@@ -85,7 +82,6 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturnHttpStatus404WhenTryingToFindUserByIdAndUserWasNotFound() throws Exception {
-
         when(userApplicationService.findUserById(any())).thenThrow(UserNotFoundException.class);
 
         mockMvc.perform(get("/v1/users/" + UserControllerTestFixture.userQuery().getId())
@@ -97,7 +93,6 @@ public class UserControllerTest {
 
     @Test
     public void shouldActivateUserById() throws Exception {
-
         doNothing().when(userApplicationService).activateUser(any());
 
         mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.userQuery().getId() + "/activation")
@@ -109,7 +104,6 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturnHttpStatus404WhenTryingToActivateUserAndUserWasNotFound() throws Exception {
-
         doThrow(UserNotFoundException.class).when(userApplicationService).activateUser(any());
 
         mockMvc.perform(post("/v1/users/" + UserControllerTestFixture.userQuery().getId() + "/activation")
@@ -121,7 +115,6 @@ public class UserControllerTest {
 
     @Test
     public void shouldAuthenticateUser() throws Exception {
-
         when(userApplicationService.authenticateUser(any())).thenReturn(UserControllerTestFixture.userQuery());
 
         mockMvc.perform(post("/v1/users/authentication")
@@ -135,7 +128,6 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturnHttpStatus401WhenTryingToAuthenticateUserWithWrongEmailOrPassword() throws Exception {
-
         doThrow(WrongEmailOrPasswordException.class).when(userApplicationService).authenticateUser(any());
 
         mockMvc.perform(post("/v1/users/authentication")
@@ -148,7 +140,6 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturnHttpStatus401WhenTryingToAuthenticateUserNotActive() throws Exception {
-
         doThrow(UserNotActiveException.class).when(userApplicationService).authenticateUser(any());
 
         mockMvc.perform(post("/v1/users/authentication")

@@ -7,32 +7,23 @@ import br.com.maxplorer.userservice.core.domain.event.EventStoreRepository;
 import br.com.maxplorer.userservice.core.domain.exception.InternalServerException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+@AllArgsConstructor
 @Service
 public class MessagingStream implements EventPublisher {
 
-    private MessagingChannels messagingChannels;
-    private EventStoreRepository eventStoreRepository;
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    public MessagingStream(MessagingChannels messagingChannels,
-                           EventStoreRepository eventStoreRepository,
-                           ObjectMapper objectMapper) {
-        this.messagingChannels = messagingChannels;
-        this.eventStoreRepository = eventStoreRepository;
-        this.objectMapper = objectMapper;
-    }
+    private final MessagingChannels messagingChannels;
+    private final EventStoreRepository eventStoreRepository;
+    private final ObjectMapper objectMapper;
 
     @Override
     @Transactional
-    public void publish(Event event) {
-
+    public void publish(final Event event) {
         eventStoreRepository.save(toEventStore(event));
 
         messagingChannels.userServiceOutput().send(MessageBuilder
@@ -46,8 +37,7 @@ public class MessagingStream implements EventPublisher {
                 .build());
     }
 
-    private EventStore toEventStore(Event event) {
-
+    private EventStore toEventStore(final Event event) {
         final String eventPayload;
 
         try {

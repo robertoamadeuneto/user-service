@@ -25,7 +25,6 @@ public class EventStoreRepositoryJpaTest {
 
     @Test
     public void shouldSave() {
-
         final EventStore eventStore = EventStoreRepositoryJpaTestFixture.eventStore();
 
         eventStoreRepositoryJpa.save(eventStore);

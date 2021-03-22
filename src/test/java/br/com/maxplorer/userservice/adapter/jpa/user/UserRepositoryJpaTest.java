@@ -31,7 +31,6 @@ public class UserRepositoryJpaTest {
 
     @Test
     public void shouldFindByEmail() {
-
         final User user = UserRepositoryJpaTestFixture.user();
 
         when(userRepositoryJpaSpringData.findByEmail(any())).thenReturn(Optional.of(user));
@@ -46,7 +45,6 @@ public class UserRepositoryJpaTest {
 
     @Test
     public void shouldNotFindByEmail() {
-
         when(userRepositoryJpaSpringData.findByEmail(any())).thenReturn(Optional.empty());
 
         final Optional<User> foundUser = userRepositoryJpa.findByEmail("james.gosling@email.com");
@@ -58,7 +56,6 @@ public class UserRepositoryJpaTest {
 
     @Test
     public void shouldSave() {
-
         final User user = UserRepositoryJpaTestFixture.user();
 
         userRepositoryJpa.save(user);

@@ -4,7 +4,7 @@ import br.com.maxplorer.userservice.core.application.user.UserApplicationService
 import br.com.maxplorer.userservice.core.application.user.command.AuthenticateUserCommand;
 import br.com.maxplorer.userservice.core.application.user.command.NewUserCommand;
 import br.com.maxplorer.userservice.core.application.user.query.UserQuery;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,20 +16,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.UUID;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
 
     private final UserApplicationService userApplicationService;
 
-    @Autowired
-    public UserController(UserApplicationService userApplicationService) {
-        this.userApplicationService = userApplicationService;
-    }
-
     @PostMapping
-    public ResponseEntity<Void> registerNewUser(@RequestBody NewUserCommand command) {
-
+    public ResponseEntity<Void> registerNewUser(@RequestBody final NewUserCommand command) {
         final UUID newUserId = userApplicationService.registerNewUser(command);
 
         return ResponseEntity.created(ServletUriComponentsBuilder
@@ -41,24 +36,21 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserQuery> findUserById(@PathVariable UUID id) {
-
+    public ResponseEntity<UserQuery> findUserById(@PathVariable final UUID id) {
         final UserQuery query = userApplicationService.findUserById(id);
 
         return ResponseEntity.ok(query);
     }
 
     @PostMapping("/{id}/activation")
-    public ResponseEntity<Void> activateUser(@PathVariable UUID id) {
-
+    public ResponseEntity<Void> activateUser(@PathVariable final UUID id) {
         userApplicationService.activateUser(id);
 
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/authentication")
-    public ResponseEntity<UserQuery> authenticateUser(@RequestBody AuthenticateUserCommand command) {
-
+    public ResponseEntity<UserQuery> authenticateUser(@RequestBody final AuthenticateUserCommand command) {
         final UserQuery query = userApplicationService.authenticateUser(command);
 
         return ResponseEntity.ok(query);

@@ -44,7 +44,6 @@ public class UserRepositoryJpaSpringDataTest {
 
     @Test
     public void shouldFindByEmail() {
-
         final Optional<User> foundUser = userRepositoryJpaSpringData.findByEmail(UserRepositoryJpaSpringDataTestFixture.user().email());
 
         assertThat(foundUser).isPresent();
@@ -53,7 +52,6 @@ public class UserRepositoryJpaSpringDataTest {
 
     @Test
     public void shouldNotFindByEmail() {
-
         final Optional<User> foundUser = userRepositoryJpaSpringData.findByEmail("invalid@email.com");
 
         assertThat(foundUser).isNotPresent();

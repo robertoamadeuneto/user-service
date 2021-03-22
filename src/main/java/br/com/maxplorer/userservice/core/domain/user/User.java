@@ -58,13 +58,13 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Password> passwords;
 
-    public static User newUser(UUID id,
-                               String firstName,
-                               String lastName,
-                               LocalDate dateOfBirth,
-                               Genre genre,
-                               String email,
-                               String password) {
+    public static User newUser(final UUID id,
+                               final String firstName,
+                               final String lastName,
+                               final LocalDate dateOfBirth,
+                               final Genre genre,
+                               final String email,
+                               final String password) {
 
         final User newUser = new User(id,
                 firstName,
@@ -101,7 +101,7 @@ public class User implements Serializable {
         return status.equals(Status.ACTIVE);
     }
 
-    public boolean isPasswordValid(String password) {
+    public boolean isPasswordValid(final String password) {
         return passwords.stream().filter(Password::active).findFirst().get().matches(password);
     }
 }

@@ -7,7 +7,9 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 public class UserCreatedEvent extends UserEvent {
 
-    public UserCreatedEvent(UUID id, String fullName, String email) {
+    public UserCreatedEvent(final UUID id,
+                            final String fullName,
+                            final String email) {
         super("user-service.user.created", id, fullName, email);
     }
 }
