@@ -32,7 +32,7 @@ public class SwaggerConfiguration {
                 .title("Maxplorer by Roberto Amadeu Neto")
                 .description("Explore the world.")
                 .version("1.0")
-                .contact(new Contact("Roberto Amadeu Neto", "http://www.robertoaneto.com.br", "robertoaneto@hotmail.com.br"))
+                .contact(new Contact("Roberto Amadeu Neto", "http://www.robertoaneto.com.br", "robertoamadeuneto@gmail.com"))
                 .build();
     }
 }
