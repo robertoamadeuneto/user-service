@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: url
-    username: username
-    password: password
+    url: ${url}
+    username: ${username}
+    password: ${password}
   rabbitmq:
-    addresses: addresses
-    username: username
-    password: password
+    addresses: ${addresses}
+    username: ${username}
+    password: ${password}
