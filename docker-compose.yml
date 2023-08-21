@@ -1,9 +1,10 @@
-version: "3"
+version: "3.8"
 
 services:
   postgres:
     container_name: postgres
-    image: postgres
+    image: postgres:15.2
+    restart: always
     ports:
       - "5433:5432"
     environment:
@@ -11,7 +12,7 @@ services:
       POSTGRES_PASSWORD: user_service
       POSTGRES_DB: user_service
     volumes:
-      - "./.volumes/postgres:/var/lib/postgresql/data"
+      - user-service_postgres:/var/lib/postgresql/data
     networks:
       - maxplorer
   rabbitmq:
@@ -22,6 +23,9 @@ services:
       - "15673:15672"
     networks:
       - maxplorer
+
+volumes:
+  user-service_postgres:
 
 networks:
   maxplorer:

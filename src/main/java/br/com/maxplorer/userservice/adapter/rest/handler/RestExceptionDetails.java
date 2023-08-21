@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Data
-class RestExceptionDetails {
+public class RestExceptionDetails {
 
     private List<Detail> details;
 
